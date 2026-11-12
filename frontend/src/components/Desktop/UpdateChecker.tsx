@@ -92,7 +92,7 @@ export function UpdateChecker() {
 
       setState('ready');
     } catch (e: any) {
-      setErrorMsg(e?.message || 'Download failed');
+      setErrorMsg(e?.message || 'La descarga falló');
       setState('error');
       setTimeout(() => setState('idle'), 5000);
     }
@@ -121,18 +121,18 @@ export function UpdateChecker() {
     <div style={styles.banner}>
       {state === 'available' && (
         <div style={styles.row}>
-          <span>Update available: <strong>v{version}</strong></span>
+          <span>Actualización disponible: <strong>v{version}</strong></span>
           <div style={styles.actions}>
-            <button style={styles.primaryBtn} onClick={handleDownload}>Download</button>
-            <button style={styles.secondaryBtn} onClick={() => setDismissed(true)}>Later</button>
-            <button style={styles.muteBtn} onClick={handleDisable}>Disable auto-updates</button>
+            <button style={styles.primaryBtn} onClick={handleDownload}>Descargar</button>
+            <button style={styles.secondaryBtn} onClick={() => setDismissed(true)}>Más tarde</button>
+            <button style={styles.muteBtn} onClick={handleDisable}>Desactivar actualizaciones automáticas</button>
           </div>
         </div>
       )}
 
       {state === 'downloading' && (
         <div style={styles.row}>
-          <span>Downloading update... {progress}%</span>
+          <span>Descargando actualización... {progress}%</span>
           <div style={styles.progressBar}>
             <div style={{ ...styles.progressFill, width: `${progress}%` }} />
           </div>
@@ -141,17 +141,17 @@ export function UpdateChecker() {
 
       {state === 'ready' && (
         <div style={styles.row}>
-          <span style={{ color: '#a6e3a1' }}>Update installed.</span>
+          <span style={{ color: '#a6e3a1' }}>Actualización instalada.</span>
           <div style={styles.actions}>
-            <button style={styles.successBtn} onClick={handleRelaunch}>Relaunch now</button>
-            <button style={styles.secondaryBtn} onClick={() => setDismissed(true)}>Later</button>
+            <button style={styles.successBtn} onClick={handleRelaunch}>Reiniciar ahora</button>
+            <button style={styles.secondaryBtn} onClick={() => setDismissed(true)}>Más tarde</button>
           </div>
         </div>
       )}
 
       {state === 'error' && (
         <div style={styles.row}>
-          <span style={{ color: '#f38ba8' }}>Update error: {errorMsg}</span>
+          <span style={{ color: '#f38ba8' }}>Error al actualizar: {errorMsg}</span>
         </div>
       )}
     </div>

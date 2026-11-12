@@ -54,12 +54,12 @@ export function Sidebar() {
 
   const navItems = [
     { path: '/', icon: MessageSquare, label: 'Chat' },
-    { path: '/dashboard', icon: BarChart3, label: 'Dashboard' },
-    { path: '/data-sources', icon: Database, label: 'Data Sources' },
-    { path: '/agents', icon: Bot, label: 'Agents' },
-    { path: '/logs', icon: ScrollText, label: 'Logs' },
-    { path: '/settings', icon: Settings, label: 'Settings' },
-    { path: '/get-started', icon: Rocket, label: 'Get Started' },
+    { path: '/dashboard', icon: BarChart3, label: 'Panel' },
+    { path: '/data-sources', icon: Database, label: 'Fuentes de datos' },
+    { path: '/agents', icon: Bot, label: 'Agentes' },
+    { path: '/logs', icon: ScrollText, label: 'Registros' },
+    { path: '/settings', icon: Settings, label: 'Ajustes' },
+    { path: '/get-started', icon: Rocket, label: 'Primeros pasos' },
   ];
 
   return (
@@ -119,7 +119,7 @@ export function Sidebar() {
                 style={{ color: 'var(--color-text-secondary)' }}
                 onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--color-bg-tertiary)')}
                 onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
-                title="New chat"
+                title="Nuevo chat"
               >
                 <Plus size={18} />
               </button>
@@ -149,12 +149,12 @@ export function Sidebar() {
                 style={{ color: deepResearch ? 'var(--color-accent)' : 'var(--color-text)' }}
               >
                 {deepResearch
-                  ? 'Deep Research'
-                  : selectedModel || serverInfo?.model || 'Select model'}
+                  ? 'Investigación profunda'
+                  : selectedModel || serverInfo?.model || 'Elegir modelo'}
               </span>
               {modelLoading && (
                 <span className="text-[10px] block text-left" style={{ color: 'var(--color-accent)' }}>
-                  Loading model...
+                  Cargando modelo...
                 </span>
               )}
             </div>
@@ -177,7 +177,7 @@ export function Sidebar() {
               <Search size={14} style={{ color: 'var(--color-text-tertiary)' }} />
               <input
                 type="text"
-                placeholder="Search chats..."
+                placeholder="Buscar chats..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="flex-1 bg-transparent outline-none text-sm"

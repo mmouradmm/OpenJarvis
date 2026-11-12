@@ -12,9 +12,9 @@ import { isEmbedOnlyModel } from '../lib/model-capabilities';
 import { InferenceRecoveryButton, InferenceSourceSetup } from './InferenceSourceSetup';
 
 const STEPS = [
-  { key: 'ollama_ready', label: 'Inference Engine', icon: Cpu, detail: 'Starting Ollama...' },
-  { key: 'model_ready', label: 'AI Model', icon: Database, detail: 'Loading model...' },
-  { key: 'server_ready', label: 'API Server', icon: Server, detail: 'Starting server...' },
+  { key: 'ollama_ready', label: 'Motor de IA', icon: Cpu, detail: 'Iniciando Ollama...' },
+  { key: 'model_ready', label: 'Modelo de IA', icon: Database, detail: 'Cargando modelo...' },
+  { key: 'server_ready', label: 'Servidor API', icon: Server, detail: 'Iniciando servidor...' },
 ] as const;
 
 type StepKey = (typeof STEPS)[number]['key'];
@@ -58,7 +58,7 @@ function StepRow({
           {label}
         </div>
         <div className="text-xs truncate" style={{ color: 'var(--color-text-tertiary)', maxWidth: '280px' }}>
-          {done ? 'Ready' : active ? detail : 'Waiting...'}
+          {done ? 'Ready' : active ? detail : 'Esperando...'}
         </div>
       </div>
       <div className="shrink-0">
@@ -167,21 +167,20 @@ export function SetupScreen({ onReady }: { onReady: () => void }) {
       <div className="w-full max-w-md px-6">
         {/* Logo */}
         <div className="text-center mb-10">
-          <div
-            className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4"
-            style={{ background: 'var(--color-accent-subtle)', color: 'var(--color-accent)' }}
-          >
-            <Cpu size={32} />
-          </div>
+          <img
+            src="/pwa-192x192.png"
+            alt="AXE"
+            className="w-20 h-20 mx-auto mb-4"
+          />
           <h1 className="text-2xl font-bold mb-1" style={{ color: 'var(--color-text)' }}>
-            OpenJarvis
+            AXE
           </h1>
           <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>
             {!statusChecked
-              ? 'Checking your saved setup...'
+              ? 'Revisando tu configuración guardada...'
               : status?.source === 'custom'
-                ? 'Connecting to your AI server...'
-                : 'Setting up your local AI...'}
+                ? 'Conectando con tu servidor de IA...'
+                : 'Preparando tu IA local...'}
           </p>
         </div>
 
@@ -189,9 +188,9 @@ export function SetupScreen({ onReady }: { onReady: () => void }) {
         <div className="flex flex-col gap-2 mb-8">
           {(status?.source === 'custom'
             ? [
-                { key: 'ollama_ready' as const, label: 'Inference Engine', icon: Cpu, detail: 'Connecting to your server...' },
-                { key: 'model_ready' as const, label: 'Endpoint', icon: Database, detail: 'Checking endpoint...' },
-                { key: 'server_ready' as const, label: 'API Server', icon: Server, detail: 'Starting server...' },
+                { key: 'ollama_ready' as const, label: 'Motor de IA', icon: Cpu, detail: 'Conectando con tu servidor...' },
+                { key: 'model_ready' as const, label: 'Servidor', icon: Database, detail: 'Comprobando el servidor...' },
+                { key: 'server_ready' as const, label: 'Servidor API', icon: Server, detail: 'Iniciando servidor...' },
               ]
             : STEPS
           ).map((step) => (

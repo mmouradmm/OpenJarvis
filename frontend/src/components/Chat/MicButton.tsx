@@ -13,16 +13,16 @@ export function MicButton({ state, onClick, disabled, reason }: MicButtonProps) 
 
   const tooltipText =
     reason === 'not-enabled'
-      ? 'Enable in Settings'
+      ? 'Activar en Ajustes'
       : reason === 'no-backend'
-        ? 'Speech backend not configured'
+        ? 'Voz no configurada'
         : reason === 'streaming'
-          ? 'Wait for response'
+          ? 'Espera la respuesta'
           : state === 'recording'
-            ? 'Stop recording'
+            ? 'Detener grabación'
             : state === 'transcribing'
-              ? 'Transcribing...'
-              : 'Voice input';
+              ? 'Transcribiendo...'
+              : 'Entrada por voz';
 
   const isInactive = disabled || state === 'transcribing';
 

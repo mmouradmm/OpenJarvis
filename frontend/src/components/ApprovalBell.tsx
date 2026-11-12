@@ -5,9 +5,9 @@ import type { PendingApproval } from '../lib/api';
 
 const TIER_STYLES: Record<string, { label: string; color: string; bg: string }> = {
   trivial: { label: 'Trivial', color: 'var(--color-text-secondary)', bg: 'color-mix(in srgb, var(--color-text-secondary) 10%, transparent)' },
-  low:     { label: 'Low',     color: '#3b82f6',                    bg: 'rgba(59,130,246,0.12)' },
-  medium:  { label: 'Medium',  color: 'var(--color-warning)',       bg: 'color-mix(in srgb, var(--color-warning) 12%, transparent)' },
-  high:    { label: 'High',    color: 'var(--color-error)',         bg: 'color-mix(in srgb, var(--color-error) 12%, transparent)' },
+  low:     { label: 'Bajo',     color: '#3b82f6',                    bg: 'rgba(59,130,246,0.12)' },
+  medium:  { label: 'Medio',  color: 'var(--color-warning)',       bg: 'color-mix(in srgb, var(--color-warning) 12%, transparent)' },
+  high:    { label: 'Alto',    color: 'var(--color-error)',         bg: 'color-mix(in srgb, var(--color-error) 12%, transparent)' },
 };
 
 function timeAgo(iso: string): string {
@@ -80,7 +80,7 @@ export function ApprovalBell() {
       <button
         onClick={() => setOpen(o => !o)}
         className="relative p-2 rounded-lg transition-colors cursor-pointer"
-        title="Agent approvals"
+        title="Aprobaciones de agentes"
         style={{
           color: count > 0 ? 'var(--color-text)' : 'var(--color-text-secondary)',
           background: open
@@ -120,7 +120,7 @@ export function ApprovalBell() {
             <div className="flex items-center gap-2">
               <Bell size={13} style={{ color: 'var(--color-accent)' }} />
               <span className="text-sm font-semibold" style={{ color: 'var(--color-text)' }}>
-                Agent Approvals
+                Aprobaciones de agentes
               </span>
             </div>
             {count > 0 && (
@@ -142,7 +142,7 @@ export function ApprovalBell() {
               <div className="flex flex-col items-center justify-center py-12 gap-2">
                 <CheckCircle size={26} style={{ color: 'var(--color-text-secondary)', opacity: 0.35 }} />
                 <span className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>
-                  No pending approvals
+                  No hay aprobaciones pendientes
                 </span>
               </div>
             ) : (
@@ -203,7 +203,7 @@ export function ApprovalBell() {
                         }
                       >
                         {isExpanded ? <ChevronUp size={11} /> : <ChevronDown size={11} />}
-                        {isExpanded ? 'Hide details' : 'View details'}
+                        {isExpanded ? 'Ocultar detalles' : 'Ver detalles'}
                       </button>
                     )}
 
@@ -236,7 +236,7 @@ export function ApprovalBell() {
                         }}
                       >
                         <CheckCircle size={12} />
-                        Approve
+                        Aprobar
                       </button>
                       <button
                         onClick={() => handleDeny(action.id)}
@@ -249,7 +249,7 @@ export function ApprovalBell() {
                         }}
                       >
                         <XCircle size={12} />
-                        Deny
+                        Rechazar
                       </button>
                     </div>
                   </div>

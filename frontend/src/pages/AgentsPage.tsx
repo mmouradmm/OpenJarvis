@@ -130,7 +130,7 @@ function formatRelativeTime(ts?: number | null): string {
   if (!ts) return 'Never';
   const diff = Date.now() - ts * 1000;
   const mins = Math.floor(diff / 60000);
-  if (mins < 1) return 'Just now';
+  if (mins < 1) return 'Ahora mismo';
   if (mins < 60) return `${mins}m ago`;
   const hours = Math.floor(mins / 60);
   if (hours < 24) return `${hours}h ago`;
@@ -153,13 +153,13 @@ function formatSchedule(type?: string, value?: string): string {
       };
       // Daily pattern: 0 H * * *
       if (min === '0' && !isNaN(hourNum) && parts[2] === '*' && parts[3] === '*' && dow === '*') {
-        return `Daily at ${formatHour(hourNum)}`;
+        return `Diario a las ${formatHour(hourNum)}`;
       }
       // Weekly pattern: 0 H * * days
       if (min === '0' && !isNaN(hourNum) && parts[2] === '*' && parts[3] === '*' && dow !== '*') {
-        const DAY_NAMES: Record<string, string> = { '1': 'Mon', '2': 'Tue', '3': 'Wed', '4': 'Thu', '5': 'Fri', '6': 'Sat', '7': 'Sun' };
+        const DAY_NAMES: Record<string, string> = { '1': 'Lun', '2': 'Mar', '3': 'Mié', '4': 'Jue', '5': 'Vie', '6': 'Sáb', '7': 'Dom' };
         const dayList = dow.split(',').map(d => DAY_NAMES[d] || d).join(', ');
-        return `Weekly on ${dayList} at ${formatHour(hourNum)}`;
+        return `Semanal: ${dayList} a las ${formatHour(hourNum)}`;
       }
     }
     return `Cron: ${value}`;
@@ -175,9 +175,9 @@ function formatSchedule(type?: string, value?: string): string {
       if (h > 0) parts.push(`${h}h`);
       if (m > 0) parts.push(`${m}m`);
       if (s > 0) parts.push(`${s}s`);
-      return `Every ${parts.join(' ') || '0s'}`;
+      return `Cada ${parts.join(' ') || '0s'}`;
     }
-    return `Every ${value}`;
+    return `Cada ${value}`;
   }
   return type || 'Manual';
 }
@@ -194,39 +194,39 @@ function formatAgentSchedule(agent: ManagedAgent): string {
 const CATEGORY_MAP: Record<string, string> = {
   communication: 'Communication',
   channel: 'Communication',
-  search: 'Search & Browse',
-  browser: 'Search & Browse',
-  code: 'Code & Dev',
-  system: 'Code & Dev',
-  filesystem: 'Files & Data',
-  memory: 'Memory & Knowledge',
-  knowledge_graph: 'Memory & Knowledge',
-  reasoning: 'Reasoning & AI',
-  math: 'Reasoning & AI',
-  inference: 'Reasoning & AI',
-  agents: 'Reasoning & AI',
+  search: 'Buscar y navegar',
+  browser: 'Buscar y navegar',
+  code: 'Código y desarrollo',
+  system: 'Código y desarrollo',
+  filesystem: 'Archivos y datos',
+  memory: 'Memoria y conocimiento',
+  knowledge_graph: 'Memoria y conocimiento',
+  reasoning: 'Razonamiento e IA',
+  math: 'Razonamiento e IA',
+  inference: 'Razonamiento e IA',
+  agents: 'Razonamiento e IA',
   media: 'Media',
 };
 
 const TOOL_NAME_FALLBACK: Record<string, string> = {
-  file_read: 'Files & Data',
-  file_write: 'Files & Data',
-  pdf_extract: 'Files & Data',
-  db_query: 'Files & Data',
-  http_request: 'Files & Data',
-  apply_patch: 'Code & Dev',
-  git_status: 'Code & Dev',
-  git_diff: 'Code & Dev',
-  git_log: 'Code & Dev',
-  git_commit: 'Code & Dev',
+  file_read: 'Archivos y datos',
+  file_write: 'Archivos y datos',
+  pdf_extract: 'Archivos y datos',
+  db_query: 'Archivos y datos',
+  http_request: 'Archivos y datos',
+  apply_patch: 'Código y desarrollo',
+  git_status: 'Código y desarrollo',
+  git_diff: 'Código y desarrollo',
+  git_log: 'Código y desarrollo',
+  git_commit: 'Código y desarrollo',
   channel_send: 'Communication',
   channel_list: 'Communication',
   channel_status: 'Communication',
 };
 
 const CATEGORY_ORDER = [
-  'Communication', 'Search & Browse', 'Code & Dev', 'Files & Data',
-  'Memory & Knowledge', 'Reasoning & AI', 'Media',
+  'Communication', 'Buscar y navegar', 'Código y desarrollo', 'Archivos y datos',
+  'Memoria y conocimiento', 'Razonamiento e IA', 'Media',
 ];
 
 const POPULAR_TOOLS = new Set([
@@ -278,16 +278,16 @@ interface WizardState {
 
 
 const TEMPLATE_INSTRUCTIONS: Record<string, string> = {
-  'daily-briefing': 'Every morning, give me a fun quote of the day, summarize my top important emails, list any meetings today from my calendar, and tell me the weather for [my city].',
-  'daily_briefing': 'Every morning, give me a fun quote of the day, summarize my top important emails, list any meetings today from my calendar, and tell me the weather for [my city].',
-  'research-monitor': 'Search for the latest news and papers on [your topic]. Summarize the top 3 most relevant findings and explain why they matter.',
-  'research_monitor': 'Search for the latest news and papers on [your topic]. Summarize the top 3 most relevant findings and explain why they matter.',
-  'code-reviewer': 'Review the latest commits in [repo]. Check for bugs, security issues, and style violations. Summarize findings with file paths and line numbers.',
-  'code_reviewer': 'Review the latest commits in [repo]. Check for bugs, security issues, and style violations. Summarize findings with file paths and line numbers.',
-  'meeting-prep': 'Before my next meeting, pull context from my emails, messages, and past meetings with the attendees. Summarize key topics and suggest talking points.',
-  'meeting_prep': 'Before my next meeting, pull context from my emails, messages, and past meetings with the attendees. Summarize key topics and suggest talking points.',
-  'personal_deep_research': 'Search across all my personal data — messages, emails, meetings, documents, and notes — to answer [my question]. Cite your sources.',
-  'inbox_triager': 'Check my recent emails and messages. Categorize them by priority (urgent, important, FYI, spam). Summarize the top items I should act on.',
+  'daily-briefing': 'Cada mañana, dame una frase divertida del día, resume mis correos más importantes, dime las reuniones de hoy de mi calendario y el tiempo en [mi ciudad].',
+  'daily_briefing': 'Cada mañana, dame una frase divertida del día, resume mis correos más importantes, dime las reuniones de hoy de mi calendario y el tiempo en [mi ciudad].',
+  'research-monitor': 'Busca las últimas noticias sobre [tu tema]. Resume los 3 hallazgos más relevantes y explica por qué importan.',
+  'research_monitor': 'Busca las últimas noticias sobre [tu tema]. Resume los 3 hallazgos más relevantes y explica por qué importan.',
+  'code-reviewer': 'Revisa los últimos cambios en [repo]. Busca errores, problemas de seguridad y de estilo. Resume lo que encuentres con archivos y líneas.',
+  'code_reviewer': 'Revisa los últimos cambios en [repo]. Busca errores, problemas de seguridad y de estilo. Resume lo que encuentres con archivos y líneas.',
+  'meeting-prep': 'Antes de mi próxima reunión, revisa mis correos, mensajes y reuniones anteriores con los asistentes. Resume los temas clave y sugiere de qué hablar.',
+  'meeting_prep': 'Antes de mi próxima reunión, revisa mis correos, mensajes y reuniones anteriores con los asistentes. Resume los temas clave y sugiere de qué hablar.',
+  'personal_deep_research': 'Busca en todos mis datos personales (mensajes, correos, reuniones, documentos y notas) para responder a [mi pregunta]. Cita tus fuentes.',
+  'inbox_triager': 'Revisa mis correos y mensajes recientes. Clasifícalos por prioridad (urgente, importante, informativo, spam). Resume lo que debo atender primero.',
 };
 
 function Tooltip({ text }: { text: string }) {
@@ -406,7 +406,7 @@ function ToolsPicker({
           className="block text-[13px] font-medium"
           style={{ color: 'var(--color-text-secondary)' }}
         >
-          Tools
+          Herramientas
         </label>
         <div className="flex items-center gap-2">
           <span
@@ -457,8 +457,7 @@ function ToolsPicker({
         className="text-[10.5px] mb-2"
         style={{ color: 'var(--color-text-tertiary)' }}
       >
-        What the agent is allowed to call. An empty selection makes a
-        chat-only agent.
+        Lo que el agente puede usar. Si no eliges nada, solo podrá chatear.
       </p>
       {tools.length === 0 ? (
         <div
@@ -469,7 +468,7 @@ function ToolsPicker({
             color: 'var(--color-text-tertiary)',
           }}
         >
-          Loading available tools…
+          Cargando herramientas…
         </div>
       ) : (
         <div
@@ -728,7 +727,7 @@ function LaunchWizard({
   }
 
   async function handleLaunch() {
-    if (!wizard.name.trim()) { toast.error('Name is required'); return; }
+    if (!wizard.name.trim()) { toast.error('El nombre es obligatorio'); return; }
     setLaunching(true);
     try {
       const { type: apiScheduleType, value: apiScheduleValue } = normalizeAgentSchedule(
@@ -758,23 +757,23 @@ function LaunchWizard({
         template_id: wizard.templateId || undefined,
         config,
       });
-      toast.success(`Agent "${wizard.name}" created`);
+      toast.success(`Agente "${wizard.name}" creado`);
       onLaunched();
     } catch (err: any) {
-      toast.error(err.message || 'Failed to create agent');
+      toast.error(err.message || 'No se pudo crear el agente');
     } finally {
       setLaunching(false);
     }
   }
 
   const formatScheduleLabel = (type: string, value: string) => {
-    if (type === 'manual') return 'Manual (run on demand)';
+    if (type === 'manual') return 'Manual (cuando lo pidas)';
     if (type === 'cron') return `Cron: ${value}`;
     if (type === 'interval') {
       const secs = parseInt(value, 10);
-      if (secs >= 3600) return `Every ${secs / 3600}h`;
-      if (secs >= 60) return `Every ${secs / 60}m`;
-      return `Every ${secs}s`;
+      if (secs >= 3600) return `Cada ${secs / 3600}h`;
+      if (secs >= 60) return `Cada ${secs / 60}m`;
+      return `Cada ${secs}s`;
     }
     return type;
   };
@@ -785,7 +784,7 @@ function LaunchWizard({
       <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ background: 'rgba(0,0,0,0.6)' }}>
         <div className="rounded-xl p-6 w-full max-w-lg" style={{ background: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-semibold" style={{ color: 'var(--color-text)' }}>New Agent — Choose Template</h2>
+            <h2 className="text-lg font-semibold" style={{ color: 'var(--color-text)' }}>Nuevo agente: elige una plantilla</h2>
             <button onClick={onClose} className="p-1 rounded hover:bg-opacity-10" style={{ color: 'var(--color-text-tertiary)' }}><X size={18} /></button>
           </div>
           <div className="grid grid-cols-2 gap-3">
@@ -824,9 +823,9 @@ function LaunchWizard({
             >
               <div className="flex items-center gap-2 mb-1">
                 <span className="text-lg">⚙️</span>
-                <span className="font-semibold text-sm" style={{ color: 'var(--color-text)' }}>Custom Agent</span>
+                <span className="font-semibold text-sm" style={{ color: 'var(--color-text)' }}>Agente personalizado</span>
               </div>
-              <div className="text-xs mt-1" style={{ color: 'var(--color-text-tertiary)', textAlign: 'left' }}>Start from scratch. Pick your own tools, schedule, and behavior.</div>
+              <div className="text-xs mt-1" style={{ color: 'var(--color-text-tertiary)', textAlign: 'left' }}>Empieza desde cero. Elige tus herramientas, horario y comportamiento.</div>
             </button>
           </div>
         </div>
@@ -842,7 +841,7 @@ function LaunchWizard({
           <div className="flex items-center gap-2">
             <button onClick={() => setWizard((w) => ({ ...w, step: 1 }))} className="p-1 rounded" style={{ color: 'var(--color-text-tertiary)' }}><ChevronLeft size={18} /></button>
             <h2 className="text-lg font-semibold" style={{ color: 'var(--color-text)' }}>
-              {wizard.templateData ? `New ${wizard.templateData.name}` : 'New Custom Agent'}
+              {wizard.templateData ? `New ${wizard.templateData.name}` : 'Nuevo agente personalizado'}
             </h2>
           </div>
           <button onClick={onClose} className="p-1 rounded" style={{ color: 'var(--color-text-tertiary)' }}><X size={18} /></button>
@@ -851,11 +850,11 @@ function LaunchWizard({
         <div className="space-y-4">
           {/* Name */}
           <div>
-            <label className="block text-sm font-medium mb-1" style={{ color: 'var(--color-text-secondary)' }}>Agent Name</label>
+            <label className="block text-sm font-medium mb-1" style={{ color: 'var(--color-text-secondary)' }}>Nombre del agente</label>
             <input
               value={wizard.name}
               onChange={(e) => setWizard((w) => ({ ...w, name: e.target.value }))}
-              placeholder="e.g. AI Research Tracker"
+              placeholder="p. ej. Seguidor de noticias de IA"
               className="w-full px-3 py-2 rounded-lg text-sm bg-transparent"
               style={{ border: '1px solid var(--color-border)', color: 'var(--color-text)' }}
             />
@@ -863,18 +862,18 @@ function LaunchWizard({
 
           {/* Instruction */}
           <div>
-            <label className="block text-sm font-medium mb-1" style={{ color: 'var(--color-text-secondary)' }}>What should this agent do?</label>
+            <label className="block text-sm font-medium mb-1" style={{ color: 'var(--color-text-secondary)' }}>¿Qué debe hacer este agente?</label>
             <textarea
               value={wizard.instruction}
               onChange={(e) => setWizard((w) => ({ ...w, instruction: e.target.value }))}
-              placeholder="e.g. Monitor the latest research papers on reasoning and chain-of-thought in LLMs"
+              placeholder="p. ej. Vigila las últimas noticias sobre inteligencia artificial"
               rows={3}
               className="w-full px-3 py-2 rounded-lg text-sm bg-transparent resize-none"
               style={{ border: '1px solid var(--color-border)', color: 'var(--color-text)' }}
             />
             {wizard.instruction.includes('[') && (
               <p className="text-[10px] mt-1" style={{ color: 'var(--color-warning)' }}>
-                Replace the [bracketed text] with your own values
+                Cambia el [texto entre corchetes] por tus datos
               </p>
             )}
           </div>
@@ -891,7 +890,7 @@ function LaunchWizard({
           {/* Model + Schedule row */}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-sm font-medium mb-1" style={{ color: 'var(--color-text-secondary)' }}>Intelligence</label>
+              <label className="block text-sm font-medium mb-1" style={{ color: 'var(--color-text-secondary)' }}>Inteligencia</label>
               <select
                 value={wizard.model}
                 onChange={(e) => setWizard((w) => ({ ...w, model: e.target.value }))}
@@ -906,18 +905,18 @@ function LaunchWizard({
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1" style={{ color: 'var(--color-text-secondary)' }}>Schedule</label>
+              <label className="block text-sm font-medium mb-1" style={{ color: 'var(--color-text-secondary)' }}>Horario</label>
               <select
                 value={wizard.scheduleType}
                 onChange={(e) => setWizard((w) => ({ ...w, scheduleType: e.target.value, scheduleValue: e.target.value === 'manual' ? '' : w.scheduleValue }))}
                 className="w-full px-3 py-2 rounded-lg text-sm"
                 style={{ background: 'var(--color-bg-secondary)', border: '1px solid var(--color-border)', color: 'var(--color-text)' }}
               >
-                <option value="manual">Manual (run on demand)</option>
-                <option value="daily">Daily</option>
-                <option value="weekly">Weekly</option>
-                <option value="hourly">Every N hours</option>
-                <option value="cron">Custom (cron expression)</option>
+                <option value="manual">Manual (cuando lo pidas)</option>
+                <option value="daily">Diario</option>
+                <option value="weekly">Semanal</option>
+                <option value="hourly">Cada N horas</option>
+                <option value="cron">Personalizado (expresión cron)</option>
               </select>
               {wizard.scheduleType === 'daily' && (
                 <select
@@ -981,7 +980,7 @@ function LaunchWizard({
               )}
               {wizard.scheduleType === 'hourly' && (
                 <div className="flex items-center gap-2 mt-1.5">
-                  <span className="text-xs" style={{ color: 'var(--color-text-tertiary)' }}>Every</span>
+                  <span className="text-xs" style={{ color: 'var(--color-text-tertiary)' }}>Cada</span>
                   <input
                     type="number" min="1" max="24"
                     value={(() => { const secs = parseInt(wizard.scheduleValue || '0', 10); return secs > 0 ? Math.round(secs / 3600) : 1; })()}
@@ -1011,7 +1010,7 @@ function LaunchWizard({
           {wizard.selectedTools.length > 0 && (
             <div>
               <label className="block text-sm font-medium mb-1" style={{ color: 'var(--color-text-secondary)' }}>
-                Tools <span style={{ color: 'var(--color-text-tertiary)', fontWeight: 400 }}>(from template)</span>
+                Herramientas <span style={{ color: 'var(--color-text-tertiary)', fontWeight: 400 }}>(de la plantilla)</span>
               </label>
               <div className="flex flex-wrap gap-1.5">
                 {wizard.selectedTools.map((t) => (
@@ -1024,74 +1023,74 @@ function LaunchWizard({
           {/* Advanced Settings */}
           <details className="rounded-lg" style={{ border: '1px solid var(--color-border)' }}>
             <summary className="px-3 py-2 cursor-pointer text-sm font-medium" style={{ color: 'var(--color-text-tertiary)' }}>
-              Advanced Settings <span className="text-xs font-normal">(optional)</span>
+              Ajustes avanzados <span className="text-xs font-normal">(opcional)</span>
             </summary>
             <div className="px-3 pb-3 pt-1 space-y-3" style={{ borderTop: '1px solid var(--color-border)' }}>
               <div className="grid grid-cols-2 gap-3 text-sm">
                 <div>
-                  <label className="block text-xs mb-1" style={{ color: 'var(--color-text-tertiary)' }}>Memory Extraction<Tooltip text="How the agent remembers context between runs" /></label>
+                  <label className="block text-xs mb-1" style={{ color: 'var(--color-text-tertiary)' }}>Extracción de memoria<Tooltip text="Cómo recuerda el agente entre ejecuciones" /></label>
                   <select value={wizard.memoryExtraction} onChange={(e) => setWizard((w) => ({ ...w, memoryExtraction: e.target.value }))}
                     className="w-full px-2 py-1 rounded text-xs" style={{ background: 'var(--color-bg)', border: '1px solid var(--color-border)', color: 'var(--color-text)' }}>
-                    <option value="structured_json">Structured JSON</option>
-                    <option value="causality_graph">Causality Graph</option>
-                    <option value="scratchpad">Scratchpad</option>
-                    <option value="none">None</option>
+                    <option value="structured_json">JSON estructurado</option>
+                    <option value="causality_graph">Grafo de causas</option>
+                    <option value="scratchpad">Bloc de notas</option>
+                    <option value="none">Ninguno</option>
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs mb-1" style={{ color: 'var(--color-text-tertiary)' }}>Observation Compression<Tooltip text="How the agent summarizes long tool outputs" /></label>
+                  <label className="block text-xs mb-1" style={{ color: 'var(--color-text-tertiary)' }}>Compresión de resultados<Tooltip text="Cómo resume el agente los resultados largos" /></label>
                   <select value={wizard.observationCompression} onChange={(e) => setWizard((w) => ({ ...w, observationCompression: e.target.value }))}
                     className="w-full px-2 py-1 rounded text-xs" style={{ background: 'var(--color-bg)', border: '1px solid var(--color-border)', color: 'var(--color-text)' }}>
-                    <option value="summarize">Summarize</option>
-                    <option value="truncate">Truncate</option>
-                    <option value="none">None</option>
+                    <option value="summarize">Resumir</option>
+                    <option value="truncate">Recortar</option>
+                    <option value="none">Ninguno</option>
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs mb-1" style={{ color: 'var(--color-text-tertiary)' }}>Retrieval Strategy<Tooltip text="How the agent searches your knowledge base" /></label>
+                  <label className="block text-xs mb-1" style={{ color: 'var(--color-text-tertiary)' }}>Estrategia de búsqueda<Tooltip text="Cómo busca el agente en tu base de conocimiento" /></label>
                   <select value={wizard.retrievalStrategy} onChange={(e) => setWizard((w) => ({ ...w, retrievalStrategy: e.target.value }))}
                     className="w-full px-2 py-1 rounded text-xs" style={{ background: 'var(--color-bg)', border: '1px solid var(--color-border)', color: 'var(--color-text)' }}>
                     <option value="sqlite">BM25 (SQLite FTS5)</option>
-                    <option value="hybrid">Hybrid (BM25 + Semantic)</option>
+                    <option value="hybrid">Híbrida (BM25 + semántica)</option>
                     <option value="colbert">ColBERTv2</option>
-                    <option value="none">None</option>
+                    <option value="none">Ninguno</option>
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs mb-1" style={{ color: 'var(--color-text-tertiary)' }}>Task Decomposition<Tooltip text="How the agent breaks complex tasks into steps" /></label>
+                  <label className="block text-xs mb-1" style={{ color: 'var(--color-text-tertiary)' }}>División de tareas<Tooltip text="Cómo divide el agente las tareas complejas" /></label>
                   <select value={wizard.taskDecomposition} onChange={(e) => setWizard((w) => ({ ...w, taskDecomposition: e.target.value }))}
                     className="w-full px-2 py-1 rounded text-xs" style={{ background: 'var(--color-bg)', border: '1px solid var(--color-border)', color: 'var(--color-text)' }}>
-                    <option value="hierarchical">Hierarchical</option>
-                    <option value="phased">Phased</option>
-                    <option value="monolithic">Monolithic</option>
+                    <option value="hierarchical">Jerárquica</option>
+                    <option value="phased">Por fases</option>
+                    <option value="monolithic">Todo junto</option>
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs mb-1" style={{ color: 'var(--color-text-tertiary)' }}>Max Turns</label>
+                  <label className="block text-xs mb-1" style={{ color: 'var(--color-text-tertiary)' }}>Máx. turnos</label>
                   <input type="number" value={wizard.maxTurns} onChange={(e) => setWizard((w) => ({ ...w, maxTurns: parseInt(e.target.value, 10) || 25 }))}
                     className="w-full px-2 py-1 rounded text-xs" style={{ background: 'var(--color-bg)', border: '1px solid var(--color-border)', color: 'var(--color-text)' }} />
                 </div>
                 <div>
-                  <label className="block text-xs mb-1" style={{ color: 'var(--color-text-tertiary)' }}>Temperature</label>
+                  <label className="block text-xs mb-1" style={{ color: 'var(--color-text-tertiary)' }}>Temperatura</label>
                   <input type="number" step="0.1" min="0" max="2" value={wizard.temperature}
                     onChange={(e) => setWizard((w) => ({ ...w, temperature: parseFloat(e.target.value) || 0.3 }))}
                     className="w-full px-2 py-1 rounded text-xs" style={{ background: 'var(--color-bg)', border: '1px solid var(--color-border)', color: 'var(--color-text)' }} />
                 </div>
                 <div>
-                  <label className="block text-xs mb-1" style={{ color: 'var(--color-text-tertiary)' }}>Budget ($)</label>
+                  <label className="block text-xs mb-1" style={{ color: 'var(--color-text-tertiary)' }}>Presupuesto ($)</label>
                   <input type="number" step="0.01" value={wizard.budget} onChange={(e) => setWizard((w) => ({ ...w, budget: e.target.value }))}
-                    placeholder="Unlimited"
+                    placeholder="Ilimitado"
                     className="w-full px-2 py-1 rounded text-xs" style={{ background: 'var(--color-bg)', border: '1px solid var(--color-border)', color: 'var(--color-text)' }} />
                 </div>
                 <div>
-                  <label className="block text-xs mb-1" style={{ color: 'var(--color-text-tertiary)' }}>Schedule Type</label>
+                  <label className="block text-xs mb-1" style={{ color: 'var(--color-text-tertiary)' }}>Tipo de horario</label>
                   <select value={wizard.scheduleType} onChange={(e) => setWizard((w) => ({ ...w, scheduleType: e.target.value, scheduleValue: e.target.value === 'manual' ? '' : w.scheduleValue }))}
                     className="w-full px-2 py-1 rounded text-xs" style={{ background: 'var(--color-bg)', border: '1px solid var(--color-border)', color: 'var(--color-text)' }}>
                     <option value="manual">Manual</option>
-                    <option value="daily">Daily</option>
-                    <option value="weekly">Weekly</option>
-                    <option value="hourly">Every N hours</option>
-                    <option value="cron">Custom (cron)</option>
+                    <option value="daily">Diario</option>
+                    <option value="weekly">Semanal</option>
+                    <option value="hourly">Cada N horas</option>
+                    <option value="cron">Personalizado (cron)</option>
                   </select>
                 </div>
               </div>
@@ -1106,10 +1105,10 @@ function LaunchWizard({
               className="flex-1 py-2.5 rounded-lg text-sm font-semibold"
               style={{ background: 'var(--color-accent)', color: 'var(--color-on-accent)', opacity: launching || !wizard.name.trim() ? 0.5 : 1 }}
             >
-              {launching ? 'Creating...' : 'Launch Agent'}
+              {launching ? 'Creating...' : 'Crear agente'}
             </button>
             <button onClick={onClose} className="px-4 py-2.5 rounded-lg text-sm" style={{ border: '1px solid var(--color-border)', color: 'var(--color-text-secondary)' }}>
-              Cancel
+              Cancelar
             </button>
           </div>
         </div>
@@ -1149,7 +1148,7 @@ function OverflowMenu({
         }}
         className="p-1 rounded cursor-pointer"
         style={{ color: 'var(--color-text-tertiary)' }}
-        title="More actions"
+        title="Más acciones"
       >
         <MoreHorizontal size={14} />
       </button>
@@ -1167,7 +1166,7 @@ function OverflowMenu({
             className="w-full text-left px-3 py-1.5 text-xs cursor-pointer flex items-center gap-2"
             style={{ color: 'var(--color-error)' }}
           >
-            <Trash2 size={12} /> Delete
+            <Trash2 size={12} /> Eliminar
           </button>
         </div>
       )}
@@ -1227,7 +1226,7 @@ function AgentCard({
       <div className="text-xs mb-2 flex items-center gap-3" style={{ color: 'var(--color-text-tertiary)' }}>
         <span>{formatAgentSchedule(agent)}</span>
         <span>·</span>
-        <span>Last run: {formatRelativeTime(agent.last_run_at)}</span>
+        <span>Última ejecución: {formatRelativeTime(agent.last_run_at)}</span>
       </div>
 
       {/* Row 3: Stats */}
@@ -1246,7 +1245,7 @@ function AgentCard({
       {(agent.config?.max_cost as number) > 0 && (
         <div className="mb-3">
           <div className="flex justify-between text-xs mb-1" style={{ color: 'var(--color-text-tertiary)' }}>
-            <span>Budget</span>
+            <span>Presupuesto</span>
             <span>
               {formatCost(agent.total_cost)} / ${(agent.config?.max_cost as number).toFixed(0)}
             </span>
@@ -1274,7 +1273,7 @@ function AgentCard({
           onClick={(e) => { e.stopPropagation(); onChat(agent.id); }}
           className="p-1.5 rounded cursor-pointer transition-colors"
           style={{ background: 'var(--color-bg-tertiary)', color: 'var(--color-text-secondary)' }}
-          title="Chat with agent"
+          title="Chatear con el agente"
         >
           <MessageSquare size={13} />
         </button>
@@ -1282,7 +1281,7 @@ function AgentCard({
           onClick={(e) => { e.stopPropagation(); onEdit(agent.id); }}
           className="p-1.5 rounded cursor-pointer transition-colors"
           style={{ background: 'var(--color-bg-tertiary)', color: 'var(--color-text-secondary)' }}
-          title="Edit agent"
+          title="Editar agente"
         >
           <Pencil size={13} />
         </button>
@@ -1290,16 +1289,16 @@ function AgentCard({
           onClick={() => onRun(agent.id)}
           className="flex items-center gap-1 px-2 py-1 rounded text-xs cursor-pointer transition-colors"
           style={{ background: 'var(--color-accent)' + '15', color: 'var(--color-accent)' }}
-          title="Run now"
+          title="Ejecutar ahora"
         >
-          <Zap size={11} /> Run Now
+          <Zap size={11} /> Ejecutar ahora
         </button>
         {canPause && (
           <button
             onClick={() => onPause(agent.id)}
             className="p-1 rounded cursor-pointer"
             style={{ color: 'var(--color-text-secondary)' }}
-            title="Pause"
+            title="Pausar"
           >
             <Pause size={13} />
           </button>
@@ -1309,7 +1308,7 @@ function AgentCard({
             onClick={() => onResume(agent.id)}
             className="p-1 rounded cursor-pointer"
             style={{ color: 'var(--color-success)' }}
-            title="Resume"
+            title="Reanudar"
           >
             <Play size={13} />
           </button>
@@ -1319,9 +1318,9 @@ function AgentCard({
             onClick={() => onRecover(agent.id)}
             className="flex items-center gap-1 px-2 py-1 rounded text-xs cursor-pointer"
             style={{ background: 'var(--color-error)20', color: 'var(--color-error)' }}
-            title="Recover agent"
+            title="Recuperar agente"
           >
-            <AlertTriangle size={11} /> Recover
+            <AlertTriangle size={11} /> Recuperar
           </button>
         )}
         <div className="ml-auto">
@@ -1356,14 +1355,14 @@ function AgentInstructionSection({ agent, onAgentUpdated }: { agent: ManagedAgen
       style={{ background: 'var(--color-bg-secondary)', border: '1px solid var(--color-border)' }}
     >
       <div className="flex items-center gap-2 mb-2">
-        <h3 className="text-sm font-semibold" style={{ color: 'var(--color-text)' }}>Instruction</h3>
+        <h3 className="text-sm font-semibold" style={{ color: 'var(--color-text)' }}>Instrucción</h3>
         {!editing && (
           <button
             onClick={() => { setDraft(currentInstruction); setEditing(true); }}
             className="text-xs px-2 py-0.5 rounded cursor-pointer"
             style={{ color: 'var(--color-accent)', border: '1px solid var(--color-accent)', opacity: 0.8 }}
           >
-            Edit
+            Editar
           </button>
         )}
       </div>
@@ -1378,8 +1377,8 @@ function AgentInstructionSection({ agent, onAgentUpdated }: { agent: ManagedAgen
             style={{ border: '1px solid var(--color-border)', color: 'var(--color-text)' }}
           />
           <div className="flex gap-2">
-            <button onClick={save} className="text-xs px-3 py-1 rounded font-medium cursor-pointer" style={{ background: 'var(--color-accent)', color: 'var(--color-on-accent)' }}>Save</button>
-            <button onClick={() => setEditing(false)} className="text-xs px-3 py-1 rounded cursor-pointer" style={{ color: 'var(--color-text-tertiary)', border: '1px solid var(--color-border)' }}>Cancel</button>
+            <button onClick={save} className="text-xs px-3 py-1 rounded font-medium cursor-pointer" style={{ background: 'var(--color-accent)', color: 'var(--color-on-accent)' }}>Guardar</button>
+            <button onClick={() => setEditing(false)} className="text-xs px-3 py-1 rounded cursor-pointer" style={{ color: 'var(--color-text-tertiary)', border: '1px solid var(--color-border)' }}>Cancelar</button>
           </div>
         </div>
       ) : (
@@ -1408,7 +1407,7 @@ function AgentConfigGrid({ agent, onAgentUpdated }: { agent: ManagedAgent; onAge
         // Ask the backend which models are installed rather than hitting
         // Ollama directly from the browser: the backend always knows where
         // Ollama lives (incl. remote) and there's no cross-origin/CORS issue,
-        // which is what made the check spuriously report "Not available".
+        // which is what made the check spuriously report "No disponible".
         const installed = (await fetchModels()).map((m) => m.id);
         if (cancelled) return;
         setOllamaModels(installed);
@@ -1450,7 +1449,7 @@ function AgentConfigGrid({ agent, onAgentUpdated }: { agent: ManagedAgent; onAge
       const newConfig = { ...(agent.config || {}), model: newModel };
       await updateManagedAgent(agent.id, { config: newConfig });
       onAgentUpdated();
-      toast.success(`Model changed to ${newModel}`);
+      toast.success(`Modelo cambiado a ${newModel}`);
     } catch { /* ignore */ }
     setEditingModel(false);
     setChangingModel(false);
@@ -1465,7 +1464,7 @@ function AgentConfigGrid({ agent, onAgentUpdated }: { agent: ManagedAgent; onAge
   const rows: [string, React.ReactNode][] = [
     ['Intelligence', editingModel ? (
       changingModel ? (
-        <span className="text-sm" style={{ color: 'var(--color-text-tertiary)' }}>Switching model...</span>
+        <span className="text-sm" style={{ color: 'var(--color-text-tertiary)' }}>Cambiando de modelo...</span>
       ) : (
         <select
           autoFocus
@@ -1497,14 +1496,14 @@ function AgentConfigGrid({ agent, onAgentUpdated }: { agent: ManagedAgent; onAge
             flexShrink: 0,
           }}
           title={
-            modelAvailable === 'available' ? 'Model running'
-              : modelAvailable === 'unavailable' ? 'Model not available'
-                : 'Could not check model status'
+            modelAvailable === 'available' ? 'Modelo funcionando'
+              : modelAvailable === 'unavailable' ? 'Modelo no disponible'
+                : 'No se pudo comprobar el modelo'
           }
         />
         <span style={{ color: 'var(--color-text)' }}>{currentModel}</span>
         {modelAvailable === 'unavailable' && (
-          <span className="text-xs" style={{ color: 'var(--color-error)' }}>Not available</span>
+          <span className="text-xs" style={{ color: 'var(--color-error)' }}>No disponible</span>
         )}
         <button
           onClick={startEditingModel}
@@ -1515,15 +1514,15 @@ function AgentConfigGrid({ agent, onAgentUpdated }: { agent: ManagedAgent; onAge
             opacity: 0.8,
           }}
         >
-          Change
+          Cambiar
         </button>
       </span>
     )],
-    ['Agent Type', <span key="at">{agent.agent_type}</span>],
-    ['Schedule', <span key="sc">{formatAgentSchedule(agent)}</span>],
-    ['Last Run', <span key="lr">{formatRelativeTime(agent.last_run_at)}</span>],
-    ['Budget', <span key="bg">{agent.budget ? formatCost(agent.budget) : 'Unlimited'}</span>],
-    ['Learning', <span key="le">{agent.learning_enabled ? 'Enabled' : 'Disabled'}</span>],
+    ['Tipo de agente', <span key="at">{agent.agent_type}</span>],
+    ['Horario', <span key="sc">{formatAgentSchedule(agent)}</span>],
+    ['Última ejecución', <span key="lr">{formatRelativeTime(agent.last_run_at)}</span>],
+    ['Presupuesto', <span key="bg">{agent.budget ? formatCost(agent.budget) : 'Ilimitado'}</span>],
+    ['Aprendizaje', <span key="le">{agent.learning_enabled ? 'Activado' : 'Desactivado'}</span>],
   ];
 
   return (
@@ -1669,7 +1668,7 @@ function InteractTab({ agentId, agentStatus, onRunStateChange }: { agentId: stri
           setElapsedMs(0);
           setRunning(true);
           setErrorMsg('');
-          setLiveItems([{ kind: 'note', id: `start-${ev.timestamp}`, label: 'Run started' }]);
+          setLiveItems([{ kind: 'note', id: `start-${ev.timestamp}`, label: 'Ejecución iniciada' }]);
           break;
         }
         case 'tool_call_start': {
@@ -1718,7 +1717,7 @@ function InteractTab({ agentId, agentStatus, onRunStateChange }: { agentId: stri
         case 'agent_tick_end':
         case 'agent_tick_error': {
           if (ev.type === 'agent_tick_error') {
-            setErrorMsg(String(data.error || 'The run failed.'));
+            setErrorMsg(String(data.error || 'La ejecución falló.'));
           }
           finishRun();
           break;
@@ -1767,7 +1766,7 @@ function InteractTab({ agentId, agentStatus, onRunStateChange }: { agentId: stri
     setQuestion(q);
     setErrorMsg('');
     setSending(true);
-    setLiveItems([{ kind: 'note', id: 'queued', label: 'Starting run…' }]);
+    setLiveItems([{ kind: 'note', id: 'queued', label: 'Iniciando ejecución…' }]);
     startRef.current = Date.now();
     setElapsedMs(0);
     try {
@@ -1777,7 +1776,7 @@ function InteractTab({ agentId, agentStatus, onRunStateChange }: { agentId: stri
       setRunning(true);
       onRunStateChange?.(); // flip the parent status badge to "running" now
     } catch {
-      setErrorMsg('Could not start the agent run.');
+      setErrorMsg('No se pudo iniciar la ejecución del agente.');
       setLiveItems([]);
     } finally {
       setSending(false);
@@ -1797,7 +1796,7 @@ function InteractTab({ agentId, agentStatus, onRunStateChange }: { agentId: stri
           style={{ color: 'var(--color-text)' }}
         >
           <Activity size={14} style={{ color: 'var(--color-accent)' }} />
-          Activity trace
+          Registro de actividad
         </div>
         <div
           className="flex items-center gap-2 text-xs"
@@ -1809,13 +1808,13 @@ function InteractTab({ agentId, agentStatus, onRunStateChange }: { agentId: stri
                 className="inline-block w-2 h-2 rounded-full animate-pulse"
                 style={{ background: 'var(--color-accent)' }}
               />
-              Running{elapsedMs > 0 ? ` · ${(elapsedMs / 1000).toFixed(1)}s` : ''}
+              En marcha{elapsedMs > 0 ? ` · ${(elapsedMs / 1000).toFixed(1)}s` : ''}
             </>
           ) : (
             <>
               {agent?.last_run_at
                 ? `Last run ${new Date(agent.last_run_at * 1000).toLocaleString()}`
-                : 'Idle'}
+                : 'En espera'}
               {lastTrace && ` · ${lastTrace.outcome}`}
             </>
           )}
@@ -1834,7 +1833,7 @@ function InteractTab({ agentId, agentStatus, onRunStateChange }: { agentId: stri
       >
         {question && (
           <div className="text-xs" style={{ color: 'var(--color-text-tertiary)' }}>
-            <span style={{ color: 'var(--color-text-secondary)' }}>Question:</span> {question}
+            <span style={{ color: 'var(--color-text-secondary)' }}>Pregunta:</span> {question}
           </div>
         )}
 
@@ -1876,7 +1875,7 @@ function InteractTab({ agentId, agentStatus, onRunStateChange }: { agentId: stri
               style={{ color: 'var(--color-text-secondary)' }}
             >
               <Loader2 size={13} className="animate-spin" style={{ color: 'var(--color-accent)' }} />
-              {activity || 'Agent is working…'}
+              {activity || 'El agente está trabajando…'}
             </div>
           </>
         ) : (
@@ -1899,7 +1898,7 @@ function InteractTab({ agentId, agentStatus, onRunStateChange }: { agentId: stri
                 }}
               >
                 <div className="text-xs mb-1" style={{ color: 'var(--color-text-tertiary)' }}>
-                  Result
+                  Resultado
                 </div>
                 <div className="prose prose-sm prose-invert max-w-none">
                   <ReactMarkdown remarkPlugins={[remarkGfm]}>{findings}</ReactMarkdown>
@@ -1911,7 +1910,7 @@ function InteractTab({ agentId, agentStatus, onRunStateChange }: { agentId: stri
                   className="text-sm text-center py-8"
                   style={{ color: 'var(--color-text-tertiary)' }}
                 >
-                  No runs yet. Ask a question below to run the agent.
+                  Todavía no hay ejecuciones. Escribe una pregunta abajo para ponerlo en marcha.
                 </div>
               )
             )}
@@ -1931,7 +1930,7 @@ function InteractTab({ agentId, agentStatus, onRunStateChange }: { agentId: stri
               handleAsk();
             }
           }}
-          placeholder={isBusy ? 'Agent is running…' : "Ask a follow-up about this agent's work…"}
+          placeholder={isBusy ? 'El agente está en marcha…' : "Ask a follow-up about this agent's work…"}
           disabled={isBusy}
           className="w-full px-3 py-2 rounded-lg text-sm bg-transparent outline-none resize-none"
           style={{
@@ -1943,7 +1942,7 @@ function InteractTab({ agentId, agentStatus, onRunStateChange }: { agentId: stri
         />
         <div className="flex items-center justify-between mt-2">
           <span className="text-xs" style={{ color: 'var(--color-text-tertiary)' }}>
-            Sends your question as an ad-hoc run — results appear in the trace above.
+            Envía tu pregunta como una ejecución puntual; los resultados aparecen arriba.
           </span>
           <button
             onClick={handleAsk}
@@ -1956,7 +1955,7 @@ function InteractTab({ agentId, agentStatus, onRunStateChange }: { agentId: stri
             }}
           >
             {isBusy ? <Loader2 size={13} className="animate-spin" /> : <Send size={13} />}
-            {isBusy ? 'Running' : 'Ask'}
+            {isBusy ? 'Running' : 'Preguntar'}
           </button>
         </div>
       </div>
@@ -2042,7 +2041,7 @@ function ChannelsTab({ agentId }: { agentId: string }) {
         color: 'var(--color-text-secondary)',
         fontSize: 12, marginBottom: 12,
       }}>
-        Data sources your agent can search across
+        Fuentes de datos en las que tu agente puede buscar
       </div>
 
       {/* Connected sources grid */}
@@ -2079,7 +2078,7 @@ function ChannelsTab({ agentId }: { agentId: string }) {
                   <div style={{ fontSize: 12, color: c.chunks > 0 ? 'var(--color-success)' : 'var(--color-warning)' }}>
                     {c.chunks > 0
                       ? `${c.chunks.toLocaleString()} ${unit}`
-                      : 'Connected — no data synced yet'}
+                      : 'Conectado: aún sin datos sincronizados'}
                   </div>
                 </div>
                 <button
@@ -2092,7 +2091,7 @@ function ChannelsTab({ agentId }: { agentId: string }) {
                     borderRadius: 4, cursor: 'pointer',
                   }}
                 >
-                  {isReconnecting ? 'Cancel' : 'Reconnect'}
+                  {isReconnecting ? 'Cancel' : 'Reconectar'}
                 </button>
               </div>
               {isReconnecting && meta?.steps && (
@@ -2104,7 +2103,7 @@ function ChannelsTab({ agentId }: { agentId: string }) {
                     fontSize: 12, color: 'var(--color-warning)',
                     marginBottom: 8,
                   }}>
-                    Re-enter credentials to reconnect this source.
+                    Vuelve a escribir las credenciales para reconectar esta fuente.
                   </div>
                   {meta.steps.map((step, i) => (
                     <div
@@ -2120,7 +2119,7 @@ function ChannelsTab({ agentId }: { agentId: string }) {
                         color: 'var(--color-accent-purple)', fontSize: 10,
                         fontWeight: 600, marginBottom: 3,
                       }}>
-                        STEP {i + 1}
+                        PASO {i + 1}
                       </div>
                       <div style={{ fontSize: 12, marginBottom: step.url ? 4 : 0 }}>
                         {step.label}
@@ -2195,13 +2194,13 @@ function ChannelsTab({ agentId }: { agentId: string }) {
                     </div>
                     <div style={{ fontSize: 12,
                       color: 'var(--color-text-secondary)' }}>
-                      Not connected
+                      Sin conexión
                     </div>
                   </div>
                   <span style={{
                     color: 'var(--color-accent-purple)', fontSize: 11, fontWeight: 500,
                   }}>
-                    {isExpanded ? '\u2715 Close' : '+ Add'}
+                    {isExpanded ? '\u2715 Close' : '+ Añadir'}
                   </span>
                 </div>
 
@@ -2225,7 +2224,7 @@ function ChannelsTab({ agentId }: { agentId: string }) {
                           color: 'var(--color-accent-purple)', fontSize: 10,
                           fontWeight: 600, marginBottom: 3,
                         }}>
-                          STEP {i + 1}
+                          PASO {i + 1}
                         </div>
                         <div style={{
                           fontSize: 12, marginBottom: step.url ? 4 : 0,
@@ -2334,7 +2333,7 @@ function InlineConnectForm({
           borderRadius: 6, fontSize: 12, cursor: 'pointer',
         }}
       >
-        {loading ? 'Connecting...' : 'Connect'}
+        {loading ? 'Connecting...' : 'Conectar'}
       </button>
     </div>
   );
@@ -2370,15 +2369,15 @@ const MESSAGING_CHANNELS: MessagingChannelConfig[] = [
     type: 'slack',
     name: 'Slack',
     icon: '#',
-    description: 'DM your agent in any Slack workspace',
+    description: 'Escribe a tu agente en cualquier espacio de Slack',
     setupSteps: [
       '1. Go to api.slack.com/apps → click "Create New App" → choose "From an app manifest"',
       '2. Select your workspace. When asked for the manifest format, choose JSON. Then paste the manifest below (click "Copy" to copy it):',
-      'COPYABLE:{"display_information":{"name":"OpenJarvis"},"features":{"app_home":{"home_tab_enabled":true,"messages_tab_enabled":true,"messages_tab_read_only_enabled":false},"bot_user":{"display_name":"OpenJarvis","always_online":true}},"oauth_config":{"scopes":{"bot":["chat:write","im:write","im:read","im:history","mpim:read","mpim:history","users:read","channels:read","channels:history","channels:join","groups:read","groups:history","app_mentions:read"]}},"settings":{"event_subscriptions":{"bot_events":["message.im"]},"socket_mode_enabled":true}}',
+      'COPYABLE:{"display_information":{"name":"AXE"},"features":{"app_home":{"home_tab_enabled":true,"messages_tab_enabled":true,"messages_tab_read_only_enabled":false},"bot_user":{"display_name":"AXE","always_online":true}},"oauth_config":{"scopes":{"bot":["chat:write","im:write","im:read","im:history","mpim:read","mpim:history","users:read","channels:read","channels:history","channels:join","groups:read","groups:history","app_mentions:read"]}},"settings":{"event_subscriptions":{"bot_events":["message.im"]},"socket_mode_enabled":true}}',
       '3. Click "Next" → review the summary → click "Create". Then go to "Install App" in the left sidebar → click "Install to Workspace" → click "Allow"',
       '4. In the left sidebar, click "OAuth & Permissions". Copy the "Bot User OAuth Token" (starts with xoxb-...)',
       '5. In the left sidebar, click "Basic Information" → scroll to "App-Level Tokens" → click "Generate Token and Scopes" → name it "socket" → click "Add Scope" → select "connections:write" → click "Generate" → copy the token (starts with xapp-...)',
-      '6. (Optional) Still in "Basic Information", scroll to "Display Information" → upload the OpenJarvis icon as the app icon',
+      '6. (Optional) Still in "Basic Information", scroll to "Display Information" → upload the AXE icon as the app icon',
       '7. Paste both tokens below and click Connect',
     ],
     fields: [
@@ -2386,7 +2385,7 @@ const MESSAGING_CHANNELS: MessagingChannelConfig[] = [
       { key: 'app_token', label: 'App Token', placeholder: 'xapp-...', type: 'password', required: true },
     ],
     activeLabel: () => 'Connected to Slack',
-    howToUse: () => 'Open Slack and DM @OpenJarvis to talk to your agent.',
+    howToUse: () => 'Open Slack and DM @AXE to talk to your agent.',
   },
 ];
 
@@ -2430,7 +2429,7 @@ function SendBlueWebhookStep({
       <div style={{ marginTop: 12 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
           <span style={{ background: 'var(--color-accent-purple)', color: 'var(--color-on-accent)', borderRadius: '50%', width: 20, height: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 700, flexShrink: 0 }}>4</span>
-          <span style={{ fontSize: 12, fontWeight: 600 }}>Set up webhook to receive texts</span>
+          <span style={{ fontSize: 12, fontWeight: 600 }}>Configura el webhook para recibir mensajes</span>
         </div>
         <div style={{
           fontSize: 11, lineHeight: 1.6,
@@ -2440,9 +2439,9 @@ function SendBlueWebhookStep({
           borderRadius: 6,
           borderLeft: '3px solid var(--color-accent, var(--color-accent-purple))',
         }}>
-          <div><strong>1.</strong> Open a terminal and run: <code style={{ color: 'var(--color-accent)', background: 'var(--color-bg)', padding: '1px 4px', borderRadius: 3 }}>ngrok http 8000</code></div>
-          <div style={{ marginTop: 4 }}><strong>2.</strong> Copy the <code style={{ color: 'var(--color-accent)', background: 'var(--color-bg)', padding: '1px 4px', borderRadius: 3 }}>https://</code> forwarding URL</div>
-          <div style={{ marginTop: 4 }}><strong>3.</strong> Paste it below and click "Register Webhook"</div>
+          <div><strong>1.</strong> Abre una terminal y ejecuta: <code style={{ color: 'var(--color-accent)', background: 'var(--color-bg)', padding: '1px 4px', borderRadius: 3 }}>ngrok http 8000</code></div>
+          <div style={{ marginTop: 4 }}><strong>2.</strong> Copia la <code style={{ color: 'var(--color-accent)', background: 'var(--color-bg)', padding: '1px 4px', borderRadius: 3 }}>https://</code> URL de reenvío</div>
+          <div style={{ marginTop: 4 }}><strong>3.</strong> Pégala abajo y pulsa "Registrar webhook"</div>
         </div>
         <div style={{ display: 'flex', gap: 6 }}>
           <input
@@ -2468,22 +2467,22 @@ function SendBlueWebhookStep({
           >
             {webhookStatus === 'registering' ? 'Registering...'
               : webhookStatus === 'done' ? 'Registered!'
-              : webhookStatus === 'error' ? 'Retry'
-              : 'Register Webhook'}
+              : webhookStatus === 'error' ? 'Reintentar'
+              : 'Registrar webhook'}
           </button>
         </div>
         {webhookStatus === 'done' && (
           <div style={{ fontSize: 11, color: 'var(--color-success)', marginTop: 6 }}>
-            Webhook registered! Incoming texts will be forwarded to your agent.
+            ¡Webhook registrado! Los mensajes que lleguen se enviarán a tu agente.
           </div>
         )}
         {webhookStatus === 'error' && (
           <div style={{ fontSize: 11, color: 'var(--color-error)', marginTop: 6 }}>
-            Failed to register. Check your ngrok URL and try again.
+            No se pudo registrar. Revisa la URL de ngrok e inténtalo otra vez.
           </div>
         )}
         <div style={{ fontSize: 10, color: 'var(--color-text-tertiary)', marginTop: 8 }}>
-          Don't have ngrok? <a href="https://ngrok.com/download" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-accent)', textDecoration: 'underline' }}>Download it free</a>
+          ¿No tienes ngrok? <a href="https://ngrok.com/download" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-accent)', textDecoration: 'underline' }}>Descárgalo gratis</a>
         </div>
       </div>
     </div>
@@ -2579,7 +2578,7 @@ function SendBlueWizard({
         setSelectedNumber('');
         setStep('verified');
       } else {
-        setError('Invalid credentials. Check your API key and secret.');
+        setError('Credenciales no válidas. Revisa tu clave y tu secreto API.');
         setStep('creds');
       }
     } catch (e) {
@@ -2649,16 +2648,16 @@ function SendBlueWizard({
                 disabled={reconnecting}
                 style={{ ...btnPrimary, fontSize: 10, padding: '3px 10px' }}
               >
-                {reconnecting ? '...' : 'Reconnect'}
+                {reconnecting ? '...' : 'Reconectar'}
               </button>
             )}
             <span style={{
               background: healthy ? 'color-mix(in srgb, var(--color-success) 22%, transparent)' : 'color-mix(in srgb, var(--color-warning) 18%, var(--color-bg))',
               color: healthy ? 'var(--color-success)' : 'var(--color-warning)',
               padding: '2px 8px', borderRadius: 10, fontSize: 10, fontWeight: 600,
-            }}>{healthy ? 'Active' : 'Disconnected'}</span>
+            }}>{healthy ? 'Active' : 'Desconectado'}</span>
             <button onClick={() => setExpanded(true)} style={btnSecondary}>
-              Details
+              Detalles
             </button>
           </div>
         </div>
@@ -2674,27 +2673,26 @@ function SendBlueWizard({
           <span style={{ fontSize: 18, marginRight: 10 }}>{'\uD83D\uDCAC'}</span>
           <div style={{ flex: 1 }}>
             <div style={{ fontWeight: 600, fontSize: 13 }}>iMessage / SMS</div>
-            <div style={{ fontSize: 11, color: 'var(--color-success)' }}>Active on {activeNumber}</div>
+            <div style={{ fontSize: 11, color: 'var(--color-success)' }}>Activo en {activeNumber}</div>
           </div>
           <div style={{ display: 'flex', gap: 8 }}>
-            <button onClick={() => setExpanded(false)} style={btnSecondary}>Collapse</button>
-            <button onClick={() => onRemove(binding!.id)} style={{ ...btnSecondary, color: 'var(--color-error)' }}>Remove</button>
+            <button onClick={() => setExpanded(false)} style={btnSecondary}>Contraer</button>
+            <button onClick={() => onRemove(binding!.id)} style={{ ...btnSecondary, color: 'var(--color-error)' }}>Quitar</button>
           </div>
         </div>
         <div style={{ borderTop: '1px solid var(--color-border)', padding: 14, background: 'var(--color-bg)' }}>
           <div style={{ fontSize: 12, marginBottom: 10, lineHeight: 1.6 }}>
-            {'\u2192'} Text <strong>{activeNumber}</strong> from any phone to talk to your agent.
-            Responses arrive as iMessage (blue bubbles) when possible, SMS otherwise.
+            {'\u2192'} Text <strong>{activeNumber}</strong> desde cualquier teléfono para hablar con tu agente. Las respuestas llegan por iMessage cuando se puede y si no por SMS.
           </div>
 
           <div style={{ fontSize: 11, color: 'var(--color-text-secondary)', marginBottom: 8, fontWeight: 600 }}>
-            Send a test message
+            Enviar un mensaje de prueba
           </div>
           <div style={{ display: 'flex', gap: 6 }}>
             <input
               value={testNumber}
               onChange={(e) => { setTestNumber(e.target.value); setTestSent(false); }}
-              placeholder="Your phone number (+1...)"
+              placeholder="Tu número de teléfono (+58...)"
               style={{ ...inputStyle, flex: 1 }}
             />
             <button
@@ -2702,7 +2700,7 @@ function SendBlueWizard({
               disabled={!testNumber.trim() || testSent}
               style={{ ...btnPrimary, opacity: !testNumber.trim() ? 0.5 : 1 }}
             >
-              {testSent ? 'Sent!' : 'Send Test'}
+              {testSent ? 'Sent!' : 'Enviar prueba'}
             </button>
           </div>
           {error && <div style={{ color: 'var(--color-error)', fontSize: 11, marginTop: 6 }}>{error}</div>}
@@ -2723,14 +2721,14 @@ function SendBlueWizard({
         <div style={{ flex: 1 }}>
           <div style={{ fontWeight: 600, fontSize: 13 }}>iMessage / SMS</div>
           <div style={{ fontSize: 11, color: 'var(--color-text-secondary)' }}>
-            Your agent gets its own phone number — text it via iMessage or SMS
+            Tu agente tiene su propio número: escríbele por iMessage o SMS
           </div>
         </div>
         <button
           onClick={(e) => { e.stopPropagation(); setStep(step === 'idle' ? 'creds' : 'idle'); }}
           style={{ fontSize: 10, padding: '3px 12px', background: 'var(--color-accent-purple)', color: 'var(--color-on-accent)', border: 'none', borderRadius: 5, cursor: 'pointer', fontWeight: 600 }}
         >
-          {step === 'idle' ? 'Set Up' : 'Cancel'}
+          {step === 'idle' ? 'Configurar' : 'Cancelar'}
         </button>
       </div>
 
@@ -2739,23 +2737,23 @@ function SendBlueWizard({
         <div style={{ borderTop: '1px solid var(--color-border)', padding: 14, background: 'var(--color-bg)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
             <span style={{ background: 'var(--color-accent-purple)', color: 'var(--color-on-accent)', borderRadius: '50%', width: 20, height: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 700, flexShrink: 0 }}>1</span>
-            <span style={{ fontSize: 12, fontWeight: 600 }}>Create a SendBlue account</span>
+            <span style={{ fontSize: 12, fontWeight: 600 }}>Crea una cuenta de SendBlue</span>
           </div>
           <button
             onClick={() => window.open('https://dashboard.sendblue.com/company-signup', '_blank')}
             style={{ ...btnPrimary, marginBottom: 14, display: 'flex', alignItems: 'center', gap: 6 }}
           >
-            Open SendBlue signup {'\u2192'}
+            Abrir registro de SendBlue {'\u2192'}
           </button>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
             <span style={{ background: 'var(--color-accent-purple)', color: 'var(--color-on-accent)', borderRadius: '50%', width: 20, height: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 700, flexShrink: 0 }}>2</span>
-            <span style={{ fontSize: 12, fontWeight: 600 }}>Paste your API credentials</span>
+            <span style={{ fontSize: 12, fontWeight: 600 }}>Pega tus credenciales API</span>
           </div>
           <div style={{ fontSize: 11, color: 'var(--color-text-secondary)', marginBottom: 8 }}>
-            Go to your{' '}
+            Ve a tu{' '}
             <a href="https://dashboard.sendblue.co/api-credentials" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-accent)', textDecoration: 'underline' }}>
-              SendBlue API Credentials page
+              página de credenciales API de SendBlue
             </a>{' '}
             and copy the API Key and API Secret.
           </div>
@@ -2764,13 +2762,13 @@ function SendBlueWizard({
             <label style={{ display: 'block', fontSize: 11, color: 'var(--color-text-secondary)', marginBottom: 3, fontWeight: 500 }}>
               API Key ID *
             </label>
-            <input value={apiKey} onChange={(e) => setApiKey(e.target.value)} placeholder="Your API key ID" style={inputStyle} />
+            <input value={apiKey} onChange={(e) => setApiKey(e.target.value)} placeholder="Tu ID de clave API" style={inputStyle} />
           </div>
           <div style={{ marginBottom: 12 }}>
             <label style={{ display: 'block', fontSize: 11, color: 'var(--color-text-secondary)', marginBottom: 3, fontWeight: 500 }}>
               API Secret Key *
             </label>
-            <input value={apiSecret} onChange={(e) => setApiSecret(e.target.value)} placeholder="Your API secret key" type="password" style={inputStyle} />
+            <input value={apiSecret} onChange={(e) => setApiSecret(e.target.value)} placeholder="Tu clave secreta API" type="password" style={inputStyle} />
           </div>
 
           {error && <div style={{ color: 'var(--color-error)', fontSize: 11, marginBottom: 8 }}>{error}</div>}
@@ -2780,7 +2778,7 @@ function SendBlueWizard({
             disabled={!apiKey.trim() || !apiSecret.trim() || step === 'verifying'}
             style={{ ...btnPrimary, opacity: !apiKey.trim() || !apiSecret.trim() ? 0.5 : 1 }}
           >
-            {step === 'verifying' ? 'Verifying...' : 'Verify & Find Number'}
+            {step === 'verifying' ? 'Verifying...' : 'Verificar y buscar número'}
           </button>
         </div>
       )}
@@ -2790,18 +2788,18 @@ function SendBlueWizard({
         <div style={{ borderTop: '1px solid var(--color-border)', padding: 14, background: 'var(--color-bg)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
             <span style={{ background: 'var(--color-success)', color: 'var(--color-on-accent)', borderRadius: '50%', width: 20, height: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 700, flexShrink: 0 }}>{'\u2713'}</span>
-            <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--color-success)' }}>Credentials verified</span>
+            <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--color-success)' }}>Credenciales verificadas</span>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
             <span style={{ background: 'var(--color-accent-purple)', color: 'var(--color-on-accent)', borderRadius: '50%', width: 20, height: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 700, flexShrink: 0 }}>3</span>
-            <span style={{ fontSize: 12, fontWeight: 600 }}>Your agent's phone number</span>
+            <span style={{ fontSize: 12, fontWeight: 600 }}>Número de teléfono de tu agente</span>
           </div>
 
           {numbers.length > 1 ? (
             <div style={{ marginBottom: 12 }}>
               <label style={{ display: 'block', fontSize: 11, color: 'var(--color-text-secondary)', marginBottom: 3, fontWeight: 500 }}>
-                Select a number for your agent
+                Elige un número para tu agente
               </label>
               <select
                 value={selectedNumber}
@@ -2820,7 +2818,7 @@ function SendBlueWizard({
               <span style={{ fontSize: 20 }}>{'\uD83D\uDCF1'}</span>
               <div>
                 <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--color-success)' }}>{selectedNumber}</div>
-                <div style={{ fontSize: 11, color: 'var(--color-text-secondary)' }}>This will be your agent's phone number</div>
+                <div style={{ fontSize: 11, color: 'var(--color-text-secondary)' }}>Este será el número de teléfono de tu agente</div>
               </div>
             </div>
           ) : (
@@ -2831,8 +2829,7 @@ function SendBlueWizard({
                 padding: '8px 10px', background: 'var(--color-bg-secondary)',
                 borderRadius: 6, borderLeft: '3px solid var(--color-accent-purple)',
               }}>
-                Copy the phone number shown under <strong>"Send from"</strong> in your SendBlue dashboard
-                and paste it below. On the free tier this is a shared number.
+                Copia el número que aparece en <strong>"Send from"</strong> en tu panel de SendBlue y pégalo abajo. En el plan gratis es un número compartido.
               </div>
               <label style={{ display: 'block', fontSize: 11, color: 'var(--color-text-secondary)', marginBottom: 3, fontWeight: 500 }}>
                 SendBlue phone number *
@@ -2853,7 +2850,7 @@ function SendBlueWizard({
             disabled={step === 'connecting' || !selectedNumber.trim()}
             style={{ ...btnPrimary, opacity: !selectedNumber.trim() ? 0.5 : 1 }}
           >
-            {step === 'connecting' ? 'Connecting...' : 'Activate Phone Number'}
+            {step === 'connecting' ? 'Connecting...' : 'Activar número'}
           </button>
         </div>
       )}
@@ -2928,7 +2925,7 @@ function MessagingTab({ agentId }: { agentId: string }) {
         color: 'var(--color-text-secondary)',
         fontSize: 12, marginBottom: 14,
       }}>
-        Connect a messaging channel so you can talk to your agent from your phone or other devices.
+        Conecta un canal de mensajería para hablar con tu agente desde el móvil u otros dispositivos.
       </div>
 
       {/* SendBlue wizard — primary option */}
@@ -2945,7 +2942,7 @@ function MessagingTab({ agentId }: { agentId: string }) {
         textTransform: 'uppercase', letterSpacing: 1,
         margin: '14px 0 8px', fontWeight: 600,
       }}>
-        Other messaging channels
+        Otros canales de mensajería
       </div>
 
       {MESSAGING_CHANNELS.map((ch) => {
@@ -2991,7 +2988,7 @@ function MessagingTab({ agentId }: { agentId: string }) {
                     background: 'color-mix(in srgb, var(--color-success) 22%, transparent)', color: 'var(--color-success)',
                     padding: '2px 8px', borderRadius: 10,
                     fontSize: 10, fontWeight: 600,
-                  }}>Active</span>
+                  }}>Activo</span>
                   <button
                     onClick={() => handleRemove(binding.id)}
                     style={{
@@ -3001,7 +2998,7 @@ function MessagingTab({ agentId }: { agentId: string }) {
                       border: '1px solid var(--color-border)',
                       borderRadius: 4, cursor: 'pointer',
                     }}
-                  >Remove</button>
+                  >Quitar</button>
                 </div>
               ) : (
                 <button
@@ -3016,7 +3013,7 @@ function MessagingTab({ agentId }: { agentId: string }) {
                     cursor: 'pointer', fontWeight: 600,
                   }}
                 >
-                  {isSetup ? 'Cancel' : 'Set Up'}
+                  {isSetup ? 'Cancel' : 'Configurar'}
                 </button>
               )}
             </div>
@@ -3079,7 +3076,7 @@ function MessagingTab({ agentId }: { agentId: string }) {
                                 border: 'none', borderRadius: 3,
                                 cursor: 'pointer', fontWeight: 600,
                               }}
-                            >Copy</button>
+                            >Copiar</button>
                           </div>
                         </div>
                       );
@@ -3125,7 +3122,7 @@ function MessagingTab({ agentId }: { agentId: string }) {
                     marginTop: 4,
                   }}
                 >
-                  {loading ? 'Connecting...' : 'Connect'}
+                  {loading ? 'Connecting...' : 'Conectar'}
                 </button>
               </div>
             )}
@@ -3165,7 +3162,7 @@ function LearningTab({ agentId, learningEnabled }: { agentId: string; learningEn
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-sm font-medium" style={{ color: 'var(--color-text)' }}>Learning</span>
+          <span className="text-sm font-medium" style={{ color: 'var(--color-text)' }}>Aprendizaje</span>
           <span
             className="text-xs px-2 py-0.5 rounded-full"
             style={{
@@ -3173,7 +3170,7 @@ function LearningTab({ agentId, learningEnabled }: { agentId: string; learningEn
               color: learningEnabled ? 'var(--color-success)' : 'var(--color-text-tertiary)',
             }}
           >
-            {learningEnabled ? 'Enabled' : 'Disabled'}
+            {learningEnabled ? 'Activado' : 'Desactivado'}
           </span>
         </div>
         <button
@@ -3187,12 +3184,12 @@ function LearningTab({ agentId, learningEnabled }: { agentId: string; learningEn
           }}
         >
           <RefreshCw size={12} className={triggering ? 'animate-spin' : ''} />
-          Run Learning
+          Ejecutar aprendizaje
         </button>
       </div>
       {logs.length === 0 ? (
         <div className="text-sm text-center py-8" style={{ color: 'var(--color-text-tertiary)' }}>
-          No learning events yet. Run the agent or trigger learning manually.
+          Todavía no hay aprendizaje. Ejecuta el agente o lanza el aprendizaje a mano.
         </div>
       ) : (
         <div className="space-y-2">
@@ -3284,8 +3281,8 @@ function LogsTab({ agentId }: { agentId: string }) {
   const learningEventLabel = (eventType: string) => {
     if (eventType === 'query_start') return 'Query';
     if (eventType === 'query_complete') return 'Complete';
-    if (eventType === 'tool_call') return 'Tool Call';
-    if (eventType === 'tool_result') return 'Tool Result';
+    if (eventType === 'tool_call') return 'Uso de herramienta';
+    if (eventType === 'tool_result') return 'Resultado de herramienta';
     if (eventType === 'query_error') return 'Error';
     return eventType;
   };
@@ -3294,7 +3291,7 @@ function LogsTab({ agentId }: { agentId: string }) {
     <div className="space-y-3">
       <div className="flex items-center justify-between">
         <span className="text-sm font-medium" style={{ color: 'var(--color-text)' }}>
-          Activity Log
+          Registro de actividad
         </span>
         <span className="text-xs" style={{ color: 'var(--color-text-tertiary)' }}>
           {timeline.length} entr{timeline.length !== 1 ? 'ies' : 'y'} (auto-refreshing)
@@ -3302,7 +3299,7 @@ function LogsTab({ agentId }: { agentId: string }) {
       </div>
       {timeline.length === 0 ? (
         <div className="text-sm text-center py-8" style={{ color: 'var(--color-text-tertiary)' }}>
-          No activity yet. Send a message or run the agent to generate logs.
+          Todavía no hay actividad. Envía un mensaje o ejecuta el agente.
         </div>
       ) : (
         <div className="space-y-2">
@@ -3368,7 +3365,7 @@ function LogsTab({ agentId }: { agentId: string }) {
                       className="text-[10px] px-1.5 py-0.5 rounded font-medium"
                       style={{ background: 'var(--color-bg)', color: 'var(--color-text-secondary)' }}
                     >
-                      Trace
+                      Traza
                     </span>
                     {errorDetail && (
                       <span
@@ -3399,7 +3396,7 @@ function LogsTab({ agentId }: { agentId: string }) {
                       <span style={{ color: 'var(--color-text)' }}>{errorDetail.error_message}</span>
                     </div>
                     <div>
-                      <span className="font-medium" style={{ color: 'var(--color-text-secondary)' }}>Action: </span>
+                      <span className="font-medium" style={{ color: 'var(--color-text-secondary)' }}>Acción: </span>
                       <span style={{ color: 'var(--color-text)' }}>{errorDetail.suggested_action}</span>
                     </div>
                   </div>
@@ -3480,8 +3477,8 @@ export function AgentsPage() {
     try {
       await runManagedAgent(id);
     } catch (err: any) {
-      toast.error('Failed to start agent', {
-        description: err.message || 'Unknown error',
+      toast.error('No se pudo iniciar el agente', {
+        description: err.message || 'Error desconocido',
       });
       await refresh();
       return;
@@ -3491,12 +3488,12 @@ export function AgentsPage() {
       try {
         const agent = await fetchManagedAgent(id);
         if (agent.status === 'error') {
-          toast.error(`Agent "${agent.name}" failed`, {
-            description: agent.summary_memory?.replace(/^ERROR: /, '') || 'Unknown error',
+          toast.error(`El agente "${agent.name}" falló`, {
+            description: agent.summary_memory?.replace(/^ERROR: /, '') || 'Error desconocido',
           });
           useAppStore.getState().addLogEntry({
             timestamp: Date.now(), level: 'error', category: 'model',
-            message: `Agent "${agent.name}" failed: ${agent.summary_memory || 'Unknown error'}`,
+            message: `El agente "${agent.name}" falló: ${agent.summary_memory || 'Error desconocido'}`,
           });
         }
       } catch {}
@@ -3508,14 +3505,14 @@ export function AgentsPage() {
     try {
       const result = await recoverManagedAgent(id);
       if (result.checkpoint) {
-        toast.success('Agent recovered from checkpoint');
+        toast.success('Agente recuperado desde el último punto guardado');
       } else {
-        toast.success('Agent reset to idle (no checkpoint available)');
+        toast.success('Agente reiniciado (no había punto guardado)');
       }
       setDetailTab('overview');
     } catch (err: any) {
-      toast.error('Recovery failed', {
-        description: err.message || 'Unknown error',
+      toast.error('La recuperación falló', {
+        description: err.message || 'Error desconocido',
       });
     }
     await refresh();
@@ -3529,8 +3526,8 @@ export function AgentsPage() {
         for (const agent of agents) {
           const prev = prevStatuses.current[agent.id];
           if (prev && prev !== 'error' && agent.status === 'error') {
-            toast.error(`Agent "${agent.name}" failed`, {
-              description: agent.summary_memory?.replace(/^ERROR: /, '') || 'Unknown error',
+            toast.error(`El agente "${agent.name}" falló`, {
+              description: agent.summary_memory?.replace(/^ERROR: /, '') || 'Error desconocido',
             });
           }
           prevStatuses.current[agent.id] = agent.status;
@@ -3548,7 +3545,7 @@ export function AgentsPage() {
   if (loading) {
     return (
       <div className="flex-1 flex items-center justify-center" style={{ color: 'var(--color-text-tertiary)' }}>
-        Loading agents...
+        Cargando agentes...
       </div>
     );
   }
@@ -3562,14 +3559,14 @@ export function AgentsPage() {
         : null;
 
     const DETAIL_TABS = [
-      { id: 'interact', label: 'Interact', icon: MessageSquare },
-      { id: 'overview', label: 'Overview', icon: Activity },
-      { id: 'channels', label: 'Data Sources', icon: Database },
-      { id: 'messaging', label: 'Messaging Channels', icon: Wifi },
-      { id: 'tasks', label: 'Tasks', icon: ListTodo },
-      { id: 'memory', label: 'Memory', icon: Brain },
-      { id: 'learning', label: 'Learning', icon: Settings },
-      { id: 'logs', label: 'Logs', icon: FileText },
+      { id: 'interact', label: 'Interactuar', icon: MessageSquare },
+      { id: 'overview', label: 'Resumen', icon: Activity },
+      { id: 'channels', label: 'Fuentes de datos', icon: Database },
+      { id: 'messaging', label: 'Canales de mensajería', icon: Wifi },
+      { id: 'tasks', label: 'Tareas', icon: ListTodo },
+      { id: 'memory', label: 'Memoria', icon: Brain },
+      { id: 'learning', label: 'Aprendizaje', icon: Settings },
+      { id: 'logs', label: 'Registros', icon: FileText },
     ] as const;
 
     return (
@@ -3581,7 +3578,7 @@ export function AgentsPage() {
           className="flex items-center gap-1 mb-4 text-sm cursor-pointer"
           style={{ color: 'var(--color-text-secondary)' }}
         >
-          <ChevronLeft size={16} /> Back to agents
+          <ChevronLeft size={16} /> Volver a agentes
         </button>
 
         {/* Header */}
@@ -3607,7 +3604,7 @@ export function AgentsPage() {
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs"
                 style={{ background: 'var(--color-success)20', color: 'var(--color-success)', border: '1px solid var(--color-success)40' }}
               >
-                <MessageSquare size={13} /> Chat ready — just type below
+                <MessageSquare size={13} /> Chat listo: escribe abajo
               </span>
             ) : (
               <button
@@ -3615,7 +3612,7 @@ export function AgentsPage() {
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm cursor-pointer font-medium"
                 style={{ background: 'var(--color-accent)', color: 'var(--color-on-accent)' }}
               >
-                <Zap size={13} /> Run Now
+                <Zap size={13} /> Ejecutar ahora
               </button>
             )}
             {(selectedAgent.status === 'running' || selectedAgent.status === 'idle') && (
@@ -3624,7 +3621,7 @@ export function AgentsPage() {
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm cursor-pointer"
                 style={{ background: 'var(--color-bg-secondary)', border: '1px solid var(--color-border)', color: 'var(--color-text)' }}
               >
-                <Pause size={13} /> Pause
+                <Pause size={13} /> Pausar
               </button>
             )}
             {selectedAgent.status === 'paused' && (
@@ -3633,7 +3630,7 @@ export function AgentsPage() {
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm cursor-pointer"
                 style={{ background: 'var(--color-success)20', color: 'var(--color-success)', border: '1px solid var(--color-success)40' }}
               >
-                <Play size={13} /> Resume
+                <Play size={13} /> Reanudar
               </button>
             )}
             {(selectedAgent.status === 'error' || selectedAgent.status === 'stalled' || selectedAgent.status === 'needs_attention') && (
@@ -3642,12 +3639,12 @@ export function AgentsPage() {
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm cursor-pointer"
                 style={{ background: 'var(--color-error)20', color: 'var(--color-error)', border: '1px solid var(--color-error)40' }}
               >
-                <AlertTriangle size={13} /> Recover
+                <AlertTriangle size={13} /> Recuperar
               </button>
             )}
             <button
               onClick={async () => {
-                if (window.confirm(`Delete ${selectedAgent.name}? This cannot be undone.`)) {
+                if (window.confirm(`¿Eliminar ${selectedAgent.name}? No se puede deshacer.`)) {
                   await deleteManagedAgent(selectedAgent.id);
                   setSelectedAgentId(null);
                   await refresh();
@@ -3655,7 +3652,7 @@ export function AgentsPage() {
               }}
               className="p-1.5 rounded-lg cursor-pointer transition-colors"
               style={{ color: 'var(--color-error)', background: 'var(--color-error)15' }}
-              title="Delete agent"
+              title="Eliminar agente"
             >
               <Trash2 size={15} />
             </button>
@@ -3693,7 +3690,7 @@ export function AgentsPage() {
               style={{ background: 'var(--color-bg-secondary)', border: '1px solid var(--color-border)' }}
             >
               <h3 className="text-sm font-semibold mb-2" style={{ color: 'var(--color-text)' }}>
-                Configuration
+                Configuración
               </h3>
               <AgentConfigGrid agent={selectedAgent} onAgentUpdated={refresh} />
               <div className="mt-2 pt-2" style={{ borderTop: '1px solid var(--color-border)' }}>
@@ -3714,18 +3711,18 @@ export function AgentsPage() {
               >
                 <Database size={16} style={{ color: 'var(--color-accent)', flexShrink: 0, marginTop: 2 }} />
                 <div style={{ color: 'var(--color-text-secondary)' }}>
-                  <strong>Tip:</strong> Connect your personal data in the{' '}
+                  <strong>Consejo:</strong> Conecta tus datos personales en{' '}
                   <button
                     onClick={() => setDetailTab('channels')}
                     className="cursor-pointer underline"
                     style={{ color: 'var(--color-accent)', background: 'none', border: 'none', padding: 0, font: 'inherit' }}
-                  >Data Sources</button>{' '}
+                  >Fuentes de datos</button>{' '}
                   tab, then set up{' '}
                   <button
                     onClick={() => setDetailTab('messaging')}
                     className="cursor-pointer underline"
                     style={{ color: 'var(--color-accent)', background: 'none', border: 'none', padding: 0, font: 'inherit' }}
-                  >Messaging Channels</button>{' '}
+                  >Canales de mensajería</button>{' '}
                   to talk to this agent from your phone.
                 </div>
               </div>
@@ -3754,19 +3751,19 @@ export function AgentsPage() {
                   <div className="flex gap-0 flex-wrap items-stretch">
                     {/* Agent Statistics */}
                     <div className="pr-5">
-                      <p style={sectionTitle}>Agent Statistics</p>
+                      <p style={sectionTitle}>Estadísticas del agente</p>
                       <div className="flex gap-5">
                         <div>
                           <p className="text-xl font-bold leading-none" style={{ color: 'var(--color-text)' }}>{selectedAgent.total_runs ?? 0}</p>
-                          <p className="text-xs mt-1" style={{ color: 'var(--color-text-tertiary)' }}>Total Queries</p>
+                          <p className="text-xs mt-1" style={{ color: 'var(--color-text-tertiary)' }}>Consultas totales</p>
                         </div>
                         <div>
                           <p className="text-xl font-bold leading-none" style={{ color: 'var(--color-text)' }}>{inTok.toLocaleString()}</p>
-                          <p className="text-xs mt-1" style={{ color: 'var(--color-text-tertiary)' }}>Input Tokens</p>
+                          <p className="text-xs mt-1" style={{ color: 'var(--color-text-tertiary)' }}>Tokens de entrada</p>
                         </div>
                         <div>
                           <p className="text-xl font-bold leading-none" style={{ color: 'var(--color-text)' }}>{outTok.toLocaleString()}</p>
-                          <p className="text-xs mt-1" style={{ color: 'var(--color-text-tertiary)' }}>Output Tokens</p>
+                          <p className="text-xs mt-1" style={{ color: 'var(--color-text-tertiary)' }}>Tokens de salida</p>
                         </div>
                       </div>
                     </div>
@@ -3774,22 +3771,22 @@ export function AgentsPage() {
                       <div style={{ width: 1, background: 'var(--color-border)' }} />
                       {/* Local Utilization */}
                       <div className="px-5">
-                        <p style={sectionTitle}>Local Utilization</p>
+                        <p style={sectionTitle}>Uso local</p>
                         <div className="flex gap-5">
                           <div>
                             <p className="text-xl font-bold leading-none" style={{ color: 'var(--color-success)' }}>{fmtFlops}</p>
-                            <p className="text-xs mt-1" style={{ color: 'var(--color-text-tertiary)' }}>Compute</p>
+                            <p className="text-xs mt-1" style={{ color: 'var(--color-text-tertiary)' }}>Cómputo</p>
                           </div>
                           <div>
                             <p className="text-xl font-bold leading-none" style={{ color: 'var(--color-success)' }}>{energyKj.toFixed(2)} kJ</p>
-                            <p className="text-xs mt-1" style={{ color: 'var(--color-text-tertiary)' }}>Energy</p>
+                            <p className="text-xs mt-1" style={{ color: 'var(--color-text-tertiary)' }}>Energía</p>
                           </div>
                         </div>
                       </div>
                       <div style={{ width: 1, background: 'var(--color-border)' }} />
                       {/* Dollars Saved */}
                       <div className="pl-5">
-                        <p style={sectionTitle}>Dollars Saved vs.</p>
+                        <p style={sectionTitle}>Dólares ahorrados frente a</p>
                         <div className="flex gap-5">
                           {providers.map((p) => {
                             const cost = (inTok / 1e6) * p.inPer1M + (outTok / 1e6) * p.outPer1M;
@@ -3814,7 +3811,7 @@ export function AgentsPage() {
                 style={{ background: 'var(--color-bg-secondary)', border: '1px solid var(--color-border)' }}
               >
                 <h3 className="text-sm font-medium mb-2" style={{ color: 'var(--color-text-secondary)' }}>
-                  Messaging Channels
+                  Canales de mensajería
                 </h3>
                 {channels.map((b) => (
                   <div key={b.id} className="text-sm py-1" style={{ color: 'var(--color-text)' }}>
@@ -3866,7 +3863,7 @@ export function AgentsPage() {
             ))}
             {tasks.length === 0 && (
               <div className="text-sm py-8 text-center" style={{ color: 'var(--color-text-tertiary)' }}>
-                No tasks assigned.
+                No hay tareas asignadas.
               </div>
             )}
           </div>
@@ -3879,10 +3876,10 @@ export function AgentsPage() {
             style={{ background: 'var(--color-bg-secondary)', border: '1px solid var(--color-border)' }}
           >
             <h3 className="text-sm font-medium mb-3 flex items-center gap-2" style={{ color: 'var(--color-text-secondary)' }}>
-              <Brain size={14} /> Summary Memory
+              <Brain size={14} /> Memoria resumida
             </h3>
             <p className="whitespace-pre-wrap text-sm" style={{ color: 'var(--color-text)' }}>
-              {selectedAgent.summary_memory || 'Agent has no stored memory yet.'}
+              {selectedAgent.summary_memory || 'El agente todavía no tiene memoria guardada.'}
             </p>
           </div>
         )}
@@ -3921,7 +3918,7 @@ export function AgentsPage() {
       <header className="mb-6">
         <div className="flex justify-between items-center">
           <h1 className="text-lg font-semibold" style={{ color: 'var(--color-text)' }}>
-            Agents
+            Agentes
           </h1>
           <button
             onClick={() => agentManagerAvailable && setShowWizard(true)}
@@ -3932,11 +3929,11 @@ export function AgentsPage() {
               color: agentManagerAvailable === false ? 'var(--color-text-tertiary)' : 'var(--color-on-accent)',
             }}
           >
-            <Plus size={15} /> New Agent
+            <Plus size={15} /> Nuevo agente
           </button>
         </div>
         <p className="text-sm mt-2 max-w-2xl" style={{ color: 'var(--color-text-secondary)' }}>
-          Long-running autonomous agents that can monitor sources, run tasks on a schedule, and message you through connected channels.
+          Agentes autónomos que vigilan fuentes, hacen tareas con horario y te escriben por los canales conectados.
         </p>
       </header>
 
@@ -3950,7 +3947,7 @@ export function AgentsPage() {
           }}
         >
           <AlertTriangle size={16} />
-          <span>Agent manager is not enabled. Set <code className="font-mono text-xs">agent_manager.enabled = true</code> in your config.</span>
+          <span>El gestor de agentes no está activado. Pon <code className="font-mono text-xs">agent_manager.enabled = true</code> en tu configuración.</span>
         </div>
       )}
 
@@ -3985,9 +3982,9 @@ export function AgentsPage() {
         <div className="text-center py-16" style={{ color: 'var(--color-text-tertiary)' }}>
           <Bot size={48} className="mx-auto mb-4 opacity-30" />
           <p className="mb-2 font-medium" style={{ color: 'var(--color-text-secondary)' }}>
-            No agents yet
+            Todavía no hay agentes
           </p>
-          <p className="text-sm mb-6">Create your first agent to get started with autonomous task management.</p>
+          <p className="text-sm mb-6">Crea tu primer agente para empezar a automatizar tareas.</p>
           <button
             onClick={() => agentManagerAvailable && setShowWizard(true)}
             disabled={agentManagerAvailable === false}
@@ -3997,7 +3994,7 @@ export function AgentsPage() {
               color: agentManagerAvailable === false ? 'var(--color-text-tertiary)' : 'var(--color-on-accent)',
             }}
           >
-            <Plus size={15} /> Launch your first agent
+            <Plus size={15} /> Crea tu primer agente
           </button>
         </div>
       )}

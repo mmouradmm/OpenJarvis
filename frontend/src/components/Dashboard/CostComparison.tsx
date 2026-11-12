@@ -15,10 +15,10 @@ export function CostComparison() {
       <div className="hud-panel p-6">
         <h3 className="hud-label flex items-center gap-2 mb-4">
           <DollarSign size={12} style={{ color: 'var(--color-success)' }} />
-          Cost Comparison
+          Comparación de costos
         </h3>
         <div className="h-48 flex items-center justify-center text-sm" style={{ color: 'var(--color-text-tertiary)' }}>
-          <span className="hud-mono">awaiting first inference…</span>
+          <span className="hud-mono">esperando la primera respuesta…</span>
         </div>
       </div>
     );
@@ -31,7 +31,7 @@ export function CostComparison() {
     <div className="hud-panel p-6">
       <h3 className="hud-label flex items-center gap-2 mb-4">
         <DollarSign size={12} style={{ color: 'var(--color-success)' }} />
-        Cost Comparison*
+        Comparación de costos*
       </h3>
 
       {/* Local stats */}
@@ -42,7 +42,7 @@ export function CostComparison() {
         <HardDrive size={18} style={{ color: 'var(--color-accent)' }} />
         <div className="flex-1">
           <div className="text-sm font-medium" style={{ color: 'var(--color-text)' }}>
-            Local (your hardware)
+            Local (tu equipo)
           </div>
           <div className="text-xs" style={{ color: 'var(--color-text-secondary)' }}>
             {savings.total_calls} requests &middot; {savings.total_tokens.toLocaleString()} tokens
@@ -53,7 +53,7 @@ export function CostComparison() {
             ${savings.local_cost.toFixed(4)}
           </div>
           <div className="text-[10px]" style={{ color: 'var(--color-text-tertiary)' }}>
-            electricity only
+            solo electricidad
           </div>
         </div>
       </div>
@@ -93,7 +93,7 @@ export function CostComparison() {
 
       <div className="mt-3 pt-3" style={{ borderTop: '1px solid var(--color-border)' }}>
         <p className="text-[10px] leading-relaxed" style={{ color: 'var(--color-text-tertiary)' }}>
-          *Savings estimates assume local models (e.g. Qwen, Nemotron, Kimi) produce roughly the same number of tokens per request, on average, as closed-source cloud models.
+          *El ahorro estimado supone que los modelos locales (p. ej. Qwen, Nemotron, Kimi) generan, de media, una cantidad de tokens parecida por respuesta a la de los modelos de pago en la nube.
         </p>
       </div>
     </div>

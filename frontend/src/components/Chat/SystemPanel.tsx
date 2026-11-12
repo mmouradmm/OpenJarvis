@@ -3,14 +3,11 @@ import {
   Zap,
   Activity,
   Thermometer,
-  DollarSign,
   TrendingDown,
   Cloud,
   HardDrive,
   Hash,
   X,
-  Trophy,
-  ExternalLink,
 } from 'lucide-react';
 import { useAppStore } from '../../lib/store';
 import { getBase } from '../../lib/api';
@@ -37,8 +34,6 @@ const CLOUD_PRICING = [
 export function SystemPanel() {
   const savings = useAppStore((s) => s.savings);
   const toggleSystemPanel = useAppStore((s) => s.toggleSystemPanel);
-  const optInEnabled = useAppStore((s) => s.optInEnabled);
-  const setOptInModalOpen = useAppStore((s) => s.setOptInModalOpen);
   const liveEnergy = useAppStore((s) => s.liveEnergy);
   const [energy, setEnergy] = useState<EnergyData | null>(null);
   const [telemetry, setTelemetry] = useState<TelemetryStats | null>(null);
@@ -91,13 +86,13 @@ export function SystemPanel() {
         style={{ borderBottom: '1px solid var(--color-border)' }}
       >
         <span className="text-xs font-semibold tracking-wide uppercase" style={{ color: 'var(--color-text-secondary)' }}>
-          System
+          Sistema
         </span>
         <button
           onClick={toggleSystemPanel}
           className="p-1 rounded-md transition-colors cursor-pointer"
           style={{ color: 'var(--color-text-tertiary)' }}
-          title="Close panel"
+          title="Cerrar panel"
         >
           <X size={14} />
         </button>
@@ -107,35 +102,35 @@ export function SystemPanel() {
         {/* Session Stats */}
         <section>
           <h4 className="text-[11px] font-medium uppercase tracking-wide mb-2" style={{ color: 'var(--color-text-tertiary)' }}>
-            Session
+            Sesión
           </h4>
           <div className="grid grid-cols-2 gap-2">
-            <MiniStat icon={Hash} label="Requests" value={String(savings?.total_calls ?? telemetry?.total_requests ?? 0)} />
-            <MiniStat icon={Hash} label="Output Tokens" value={formatNumber(savings?.total_completion_tokens ?? telemetry?.total_tokens ?? 0)} />
+            <MiniStat icon={Hash} label="Solicitudes" value={String(savings?.total_calls ?? telemetry?.total_requests ?? 0)} />
+            <MiniStat icon={Hash} label="Tokens de salida" value={formatNumber(savings?.total_completion_tokens ?? telemetry?.total_tokens ?? 0)} />
           </div>
         </section>
 
         {/* Device */}
         <section>
           <h4 className="text-[11px] font-medium uppercase tracking-wide mb-2" style={{ color: 'var(--color-text-tertiary)' }}>
-            Device
+            Dispositivo
           </h4>
           <div className="grid grid-cols-2 gap-2">
             {energy?.cpu_temp_c != null && (
-              <MiniStat icon={Thermometer} label="CPU Temp" value={String(Math.round(energy.cpu_temp_c))} unit="°C" />
+              <MiniStat icon={Thermometer} label="Temp. CPU" value={String(Math.round(energy.cpu_temp_c))} unit="°C" />
             )}
             {energy?.gpu_temp_c != null && (
-              <MiniStat icon={Thermometer} label="GPU Temp" value={String(Math.round(energy.gpu_temp_c))} unit="°C" />
+              <MiniStat icon={Thermometer} label="Temp. GPU" value={String(Math.round(energy.gpu_temp_c))} unit="°C" />
             )}
             <MiniStat
               icon={Zap}
-              label="Power"
+              label="Potencia"
               value={(liveEnergy?.power_w ?? energy?.avg_power_w ?? 0).toFixed(1)}
               unit="W"
             />
             <MiniStat
               icon={Activity}
-              label="Energy"
+              label="Energía"
               value={(
                 ((liveEnergy?.energy_j ?? energy?.total_energy_j ?? 0) / 1000)
               ).toFixed(1)}
@@ -148,7 +143,7 @@ export function SystemPanel() {
         {/* Cost Comparison */}
         <section>
           <h4 className="text-[11px] font-medium uppercase tracking-wide mb-2" style={{ color: 'var(--color-text-tertiary)' }}>
-            Cost Comparison
+            Comparación de costos
           </h4>
 
           {/* Local */}
@@ -210,65 +205,6 @@ export function SystemPanel() {
 
         </section>
 
-        {/* Leaderboard / Share */}
-        <section>
-          <h4
-            className="text-[11px] font-medium uppercase tracking-wide mb-2"
-            style={{ color: 'var(--color-text-tertiary)' }}
-          >
-            Leaderboard
-          </h4>
-
-          <button
-            onClick={() => setOptInModalOpen(true)}
-            className="w-full flex items-center gap-2 rounded-lg px-3 py-2.5 transition-colors cursor-pointer"
-            style={{
-              background: optInEnabled
-                ? 'var(--color-accent-subtle)'
-                : 'var(--color-bg-secondary)',
-              border: optInEnabled
-                ? '1px solid var(--color-accent)'
-                : '1px solid var(--color-border)',
-            }}
-          >
-            <Trophy
-              size={14}
-              style={{
-                color: optInEnabled ? 'var(--color-accent)' : 'var(--color-text-tertiary)',
-              }}
-            />
-            <span
-              className="text-xs flex-1 text-left"
-              style={{
-                color: optInEnabled ? 'var(--color-accent)' : 'var(--color-text-secondary)',
-              }}
-            >
-              {optInEnabled ? 'Sharing Savings' : 'Share Your Savings'}
-            </span>
-            <span
-              className="text-[9px] px-1.5 py-0.5 rounded-full"
-              style={{
-                background: optInEnabled ? 'var(--color-accent)' : 'var(--color-bg-tertiary, var(--color-bg-secondary))',
-                color: optInEnabled ? 'white' : 'var(--color-text-tertiary)',
-              }}
-            >
-              {optInEnabled ? 'ON' : 'OFF'}
-            </span>
-          </button>
-
-          <a
-            href="https://open-jarvis.github.io/OpenJarvis/leaderboard"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-1.5 mt-1.5 px-3 py-1.5 text-[11px] rounded-lg transition-colors"
-            style={{ color: 'var(--color-text-tertiary)' }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--color-accent)')}
-            onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--color-text-tertiary)')}
-          >
-            <ExternalLink size={10} />
-            View Leaderboard
-          </a>
-        </section>
       </div>
     </div>
   );

@@ -22,7 +22,7 @@ import type {
 } from '../../types';
 
 // While Deep Research is toggled on, poll connected sources for sync
-// progress so we can surface "Searching over N items — sync in progress"
+// progress so we can surface "Buscando en N elementos: sincronización en curso"
 // next to the toggle. Polling is gated on `enabled` so toggling DR off
 // stops the network chatter immediately.
 function useResearchCorpusSync(enabled: boolean): {
@@ -175,7 +175,7 @@ export function InputArea() {
     const content = input.trim();
     if (!content || streamState.isStreaming) return;
     if (!selectedModel) {
-      toast.error('Pick a model first (⌘K)');
+      toast.error('Primero elige un modelo (⌘K)');
       return;
     }
 
@@ -235,7 +235,7 @@ export function InputArea() {
     setStreamState({
       conversationId: convId,
       isStreaming: true,
-      phase: deepResearch ? 'Researching...' : 'Generating...',
+      phase: deepResearch ? 'Investigando...' : 'Generando...',
       elapsedMs: 0,
       activeToolCalls: [],
       content: '',
@@ -337,7 +337,7 @@ export function InputArea() {
             // missing, KnowledgeStore locked, etc.). Without surfacing the
             // message, the user sees only the generic "No response was
             // generated" fallback and has no way to self-diagnose.
-            const msg = ev.message || 'Research failed (no detail provided)';
+            const msg = ev.message || 'La investigación falló (sin detalles)';
             accumulatedContent = accumulatedContent
               ? `${accumulatedContent}\n\n**Research stopped:** ${msg}`
               : `**Research failed:** ${msg}`;
@@ -382,9 +382,9 @@ export function InputArea() {
         const eventName = sseEvent.event;
 
         if (eventName === 'agent_turn_start') {
-          setStreamState({ phase: 'Agent thinking...' });
+          setStreamState({ phase: 'El agente está pensando...' });
         } else if (eventName === 'inference_start') {
-          setStreamState({ phase: 'Generating...' });
+          setStreamState({ phase: 'Generando...' });
           useAppStore.getState().addLogEntry({
             timestamp: Date.now(), level: 'info', category: 'chat',
             message: `Generating with ${selectedModel}...`,
@@ -421,7 +421,7 @@ export function InputArea() {
               tc.result = data.result;
             }
             setStreamState({
-              phase: 'Generating...',
+              phase: 'Generando...',
               activeToolCalls: [...toolCalls],
             });
             updateLastAssistant(convId, accumulatedContent, [...toolCalls]);
@@ -576,10 +576,10 @@ export function InputArea() {
               border: `1px solid ${deepResearch ? 'var(--color-accent)' : 'var(--color-border)'}`,
               color: deepResearch ? 'var(--color-accent)' : 'var(--color-text-tertiary)',
             }}
-            title={deepResearch ? 'Deep Research: on' : 'Deep Research: off'}
+            title={deepResearch ? 'Investigación profunda: activada' : 'Investigación profunda: desactivada'}
           >
             <Search size={12} />
-            Deep Research
+            Investigación profunda
           </button>
         </div>
         {deepResearch && corpusSync.syncing && corpusSync.itemsSynced > 0 && (
@@ -587,11 +587,11 @@ export function InputArea() {
             className="text-[11px] leading-snug"
             style={{ color: 'var(--color-text-tertiary)' }}
           >
-            Searching over{' '}
+            Buscando en{' '}
             <span key={corpusSync.itemsSynced} className="sync-bump" style={{ color: 'var(--color-text-secondary)' }}>
               {corpusSync.itemsSynced.toLocaleString()}
             </span>{' '}
-            items — sync in progress, results will improve as more data is indexed.
+            elementos: sincronización en curso, los resultados mejorarán a medida que se indexen más datos.
           </div>
         )}
       </div>
@@ -608,7 +608,7 @@ export function InputArea() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder={selectedModel ? 'Message OpenJarvis...' : 'Pick a model first (⌘K)...'}
+          placeholder={selectedModel ? 'Escribe a AXE...' : 'Primero elige un modelo (⌘K)...'}
           rows={1}
           className="flex-1 bg-transparent outline-none resize-none text-sm leading-relaxed"
           style={{ color: 'var(--color-text)', maxHeight: '200px' }}
@@ -619,7 +619,7 @@ export function InputArea() {
             onClick={stopStreaming}
             className="p-2 rounded-xl transition-colors shrink-0 cursor-pointer"
             style={{ background: 'var(--color-error)', color: 'var(--color-on-accent)' }}
-            title="Stop generating"
+            title="Detener respuesta"
           >
             <Square size={16} />
           </button>
@@ -634,7 +634,7 @@ export function InputArea() {
             <button
               onClick={sendMessage}
               disabled={streamState.isStreaming || !input.trim() || modelLoading || !selectedModel}
-              title={selectedModel ? 'Send message' : 'Pick a model first (⌘K)'}
+              title={selectedModel ? 'Enviar mensaje' : 'Primero elige un modelo (⌘K)'}
               className="p-2 rounded-xl transition-colors shrink-0 cursor-pointer disabled:opacity-30 disabled:cursor-default"
               style={{
                 background: input.trim() ? 'var(--color-accent)' : 'var(--color-bg-tertiary)',
@@ -648,8 +648,8 @@ export function InputArea() {
       </div>
       <div className="flex items-center justify-center mt-2 text-[11px]" style={{ color: 'var(--color-text-tertiary)' }}>
         <span>
-          <kbd className="font-mono">Enter</kbd> to send &middot;{' '}
-          <kbd className="font-mono">Shift+Enter</kbd> for new line
+          <kbd className="font-mono">Enter</kbd> para enviar &middot;{' '}
+          <kbd className="font-mono">Shift+Enter</kbd> para nueva línea
         </span>
       </div>
     </div>

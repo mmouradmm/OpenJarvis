@@ -53,10 +53,10 @@ function ProgressRow({
               : isDone
                 ? `${status!.items_synced} items`
                 : status?.state === 'paused'
-                  ? 'Paused'
+                  ? 'En pausa'
                   : status?.state === 'error'
                     ? 'Error'
-                    : 'Starting...'}
+                    : 'Iniciando...'}
           </span>
         </div>
       </div>
@@ -132,12 +132,12 @@ export function IngestDashboard({
       {/* Header */}
       <div className="mb-6">
         <h2 className="text-xl font-bold mb-1" style={{ color: 'var(--color-text)' }}>
-          {allDone ? 'Sync complete' : 'Syncing your data...'}
+          {allDone ? 'Sincronización completa' : 'Sincronizando tus datos...'}
         </h2>
         <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>
           {allDone
             ? `Indexed ${totalSynced} items across ${connectedIds.length} source${connectedIds.length !== 1 ? 's' : ''}.`
-            : 'This may take a few minutes depending on your data volume.'}
+            : 'Puede tardar unos minutos según la cantidad de datos.'}
         </p>
       </div>
 
@@ -170,7 +170,7 @@ export function IngestDashboard({
         </button>
         {!allDone && (
           <p className="text-center text-xs mt-2" style={{ color: 'var(--color-text-tertiary)' }}>
-            Sync will continue in the background
+            La sincronización seguirá en segundo plano
           </p>
         )}
       </div>
