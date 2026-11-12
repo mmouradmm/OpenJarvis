@@ -65,7 +65,7 @@ function CodeBlockPre({ children, ...props }: any) {
           onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--color-text-tertiary)')}
         >
           {copied ? <Check size={12} /> : <Copy size={12} />}
-          {copied ? 'Copied' : 'Copy'}
+          {copied ? 'Copied' : 'Copiar'}
         </button>
       </div>
       <pre {...props} style={{ margin: 0, borderRadius: 0 }}>

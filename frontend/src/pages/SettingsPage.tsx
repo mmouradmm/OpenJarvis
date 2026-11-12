@@ -527,7 +527,7 @@ export function SettingsPage() {
                   style={{ background: healthy === true ? 'var(--color-success)' : healthy === false ? 'var(--color-error)' : 'var(--color-text-tertiary)' }}
                 />
                 <span className="text-xs" style={{ color: 'var(--color-text-secondary)' }}>
-                  {healthy === true ? 'Connected' : healthy === false ? 'Disconnected' : 'Comprobando...'}
+                  {healthy === true ? 'Conectado' : healthy === false ? 'Desconectado' : 'Comprobando...'}
                 </span>
               </div>
             </SettingRow>
@@ -865,7 +865,7 @@ export function SettingsPage() {
                 />
                 <span className="text-xs" style={{ color: 'var(--color-text-secondary)' }}>
                   {speechBackendAvailable === null ? 'Comprobando...'
-                    : speechBackendAvailable ? 'Available'
+                    : speechBackendAvailable ? 'Disponible'
                     : 'Sin configurar'}
                 </span>
               </div>
@@ -913,7 +913,7 @@ export function SettingsPage() {
                 onMouseEnter={(e) => { if (!confirmClear) e.currentTarget.style.background = 'rgba(220,38,38,0.1)'; }}
                 onMouseLeave={(e) => { if (!confirmClear) e.currentTarget.style.background = 'transparent'; }}
               >
-                <Trash2 size={12} /> {confirmClear ? 'Pulsa otra vez para confirmar' : 'Clear'}
+                <Trash2 size={12} /> {confirmClear ? 'Pulsa otra vez para confirmar' : 'Borrar'}
               </button>
             </SettingRow>
           </Section>

@@ -95,15 +95,15 @@ export const SOURCE_CATALOG: ConnectorMeta[] = [
   // ── Upload / Paste ─────────────────────────────────────────────────
   {
     connector_id: 'upload',
-    display_name: 'Upload / Paste',
+    display_name: 'Subir / Pegar',
     auth_type: 'filesystem',
     category: 'other',
     icon: 'FileUp',
     color: 'text-blue-400',
-    description: 'Paste text or upload documents',
+    description: 'Pega texto o sube documentos',
     unitLabel: 'documents',
     steps: [
-      { label: 'Paste text or upload files (.txt, .md, .pdf, .docx, .csv) to add them to your knowledge base.' },
+      { label: 'Pega texto o sube archivos (.txt, .md, .pdf, .docx, .csv) para añadirlos a tu base de conocimiento.' },
     ],
     inputFields: [],
   },
@@ -118,13 +118,13 @@ export const SOURCE_CATALOG: ConnectorMeta[] = [
     category: 'communication',
     icon: 'Mail',
     color: 'text-red-400',
-    description: 'Email messages and threads',
+    description: 'Correos y conversaciones',
     unitLabel: 'emails',
     steps: [
       {
-        label: 'Make sure 2-Step Verification is enabled, then generate a 16-character App Password (Mail / Other / "AXE"). Paste it below \u2014 spaces are fine, and use the app password, not your regular Gmail password.',
+        label: 'Asegúrate de tener activada la verificación en 2 pasos y genera una contraseña de aplicación de 16 caracteres (Correo / Otra / "AXE"). Pégala abajo (los espacios no importan). Usa la contraseña de aplicación, no tu contraseña normal de Gmail.',
         url: 'https://myaccount.google.com/apppasswords',
-        urlLabel: 'How to get an app password \u2192',
+        urlLabel: 'Cómo obtener una contraseña de aplicación →',
       },
     ],
     troubleshooting: [
@@ -132,52 +132,52 @@ export const SOURCE_CATALOG: ConnectorMeta[] = [
       "Google Workspace user? Your admin may need to enable App Passwords for your organization.",
     ],
     inputFields: [
-      { name: 'email', placeholder: 'you@gmail.com', type: 'text' },
-      { name: 'password', placeholder: 'App password (xxxx xxxx xxxx xxxx)', type: 'password' },
+      { name: 'email', placeholder: 'tu@gmail.com', type: 'text' },
+      { name: 'password', placeholder: 'Contraseña de aplicación (xxxx xxxx xxxx xxxx)', type: 'password' },
     ],
   },
   {
     connector_id: 'imap',
-    display_name: 'Email (IMAP)',
+    display_name: 'Correo (IMAP)',
     auth_type: 'oauth',
     category: 'communication',
     icon: 'Mail',
     color: 'text-amber-400',
-    description: 'Any IMAP mailbox',
+    description: 'Cualquier buzón IMAP',
     unitLabel: 'emails',
     steps: [
       {
-        label: 'Generate an app password with your email provider (IMAP must be enabled), then enter your email address and app password. Known providers are detected automatically; use the optional server settings for other providers.',
+        label: 'Genera una contraseña de aplicación con tu proveedor de correo (IMAP debe estar activado) y escribe tu correo y esa contraseña. Los proveedores conocidos se detectan solos; para otros usa los ajustes opcionales del servidor.',
       },
     ],
     troubleshooting: [
-      'Most providers require an app password rather than your normal password.',
+      'La mayoría de proveedores piden una contraseña de aplicación, no tu contraseña normal.',
       'Use TLS for implicit TLS (usually port 993), or STARTTLS (usually port 143).',
       'For security, private, loopback, link-local, and otherwise non-public server addresses are rejected.',
     ],
     inputFields: [
-      { name: 'email', placeholder: 'you@example.com', type: 'text' },
-      { name: 'password', placeholder: 'App password', type: 'password' },
+      { name: 'email', placeholder: 'tu@ejemplo.com', type: 'text' },
+      { name: 'password', placeholder: 'Contraseña de aplicación', type: 'password' },
       {
         name: 'host',
-        placeholder: 'IMAP host (optional; auto-detected)',
+        placeholder: 'Servidor IMAP (opcional; se detecta solo)',
         type: 'text',
         required: false,
       },
       {
         name: 'port',
-        placeholder: 'Port (optional; 993 or 143)',
+        placeholder: 'Puerto (opcional; 993 o 143)',
         type: 'number',
         required: false,
       },
       {
         name: 'security',
-        placeholder: 'Connection security',
+        placeholder: 'Seguridad de la conexión',
         type: 'select',
         defaultValue: 'tls',
         options: [
-          { value: 'tls', label: 'TLS (usually port 993)' },
-          { value: 'starttls', label: 'STARTTLS (usually port 143)' },
+          { value: 'tls', label: 'TLS (normalmente puerto 993)' },
+          { value: 'starttls', label: 'STARTTLS (normalmente puerto 143)' },
         ],
       },
     ],
@@ -189,30 +189,30 @@ export const SOURCE_CATALOG: ConnectorMeta[] = [
     category: 'communication',
     icon: 'Hash',
     color: 'text-purple-400',
-    description: 'Read messages from every channel, private channel, DM, and group DM you have access to',
+    description: 'Lee los mensajes de todos los canales, canales privados y mensajes directos a los que tienes acceso',
     unitLabel: 'messages',
     steps: [
       {
-        label: 'Go to api.slack.com/apps and click "Create New App" → choose "From scratch". Name it "AXE" and pick your workspace',
+        label: 'Ve a api.slack.com/apps y pulsa "Create New App" → elige "From scratch". Llámala "AXE" y elige tu espacio de trabajo',
         url: 'https://api.slack.com/apps',
-        urlLabel: 'Open Slack Apps',
+        urlLabel: 'Abrir apps de Slack',
       },
       {
-        label: 'In the left sidebar, click "OAuth & Permissions". Scroll down to "User Token Scopes" (NOT "Bot Token Scopes"). Click "Add an OAuth Scope" and add EACH of these scopes one by one:',
+        label: 'En el menú de la izquierda, pulsa "OAuth & Permissions". Baja hasta "User Token Scopes" (NO "Bot Token Scopes"). Pulsa "Add an OAuth Scope" y añade CADA uno de estos permisos, uno por uno:',
       },
       {
         label: 'channels:history • channels:read • groups:history • groups:read • im:history • im:read • mpim:history • mpim:read • users:read',
       },
       {
-        label: 'In the left sidebar, click "Install App" → click "Install to Workspace" → click "Allow". After installing, copy the "User OAuth Token" that appears (starts with xoxp-, NOT xoxb-)',
+        label: 'En el menú de la izquierda, pulsa "Install App" → "Install to Workspace" → "Allow". Después copia el "User OAuth Token" que aparece (empieza por xoxp-, NO xoxb-)',
       },
       {
-        label: 'Paste the user token below. Sync indexes every channel, private channel, DM, and group DM you have access to — no need to invite anything to channels',
+        label: 'Pega el token abajo. Se sincronizarán todos los canales, canales privados y mensajes directos a los que tienes acceso; no hace falta invitar nada a los canales',
       },
       {
-        label: '(Optional) Set the app icon: in the left sidebar click "Basic Information" → scroll to "Display Information" → upload the AXE logo',
+        label: '(Opcional) Pon el icono: en el menú de la izquierda pulsa "Basic Information" → baja a "Display Information" → sube el logo de AXE',
         url: 'https://github.com/open-jarvis/OpenJarvis/blob/main/assets/openjarvis-slack-icon.jpg',
-        urlLabel: 'Download icon',
+        urlLabel: 'Descargar icono',
       },
     ],
     inputFields: [
@@ -226,22 +226,22 @@ export const SOURCE_CATALOG: ConnectorMeta[] = [
     category: 'documents',
     icon: 'FileText',
     color: 'text-gray-300',
-    description: 'Pages and databases',
+    description: 'Páginas y bases de datos',
     unitLabel: 'pages',
     steps: [
       {
-        label: 'Go to notion.so/profile/integrations → click "+ New integration". Name it "AXE", select your workspace, and click Submit',
+        label: 'Ve a notion.so/profile/integrations → pulsa "+ New integration". Llámala "AXE", elige tu espacio de trabajo y pulsa Submit',
         url: 'https://www.notion.so/profile/integrations',
-        urlLabel: 'Open Notion Integrations',
+        urlLabel: 'Abrir integraciones de Notion',
       },
       {
-        label: 'Copy the "Internal Integration Secret" (starts with ntn_) and paste it below',
+        label: 'Copia el "Internal Integration Secret" (empieza por ntn_) y pégalo abajo',
       },
       {
-        label: 'To share ALL your pages at once: open any top-level page → click "..." (top right) → "Connections" → "Add connections" → search "AXE" → click it. This shares the page and all its sub-pages. Repeat for each top-level page, or share your entire workspace by doing this on every root page',
+        label: 'Para compartir TODAS tus páginas: abre una página principal → pulsa "..." (arriba a la derecha) → "Connections" → "Add connections" → busca "AXE" → púlsalo. Así se comparten esa página y todas sus subpáginas. Repítelo con cada página principal',
       },
       {
-        label: 'Tip: if you have a single top-level page that contains everything, sharing just that one page will share all nested sub-pages automatically',
+        label: 'Consejo: si tienes una sola página principal que lo contiene todo, al compartirla se comparten también todas sus subpáginas',
       },
     ],
     inputFields: [
@@ -255,11 +255,11 @@ export const SOURCE_CATALOG: ConnectorMeta[] = [
     category: 'documents',
     icon: 'Mic',
     color: 'text-amber-400',
-    description: 'AI meeting notes',
+    description: 'Notas de reuniones con IA',
     unitLabel: 'meeting notes',
     steps: [
-      { label: 'Open the Granola desktop app. Click the gear icon (Settings) in the bottom-left corner, then click "API"' },
-      { label: 'Click "Generate API Key" (or copy your existing key). Paste the key below' },
+      { label: 'Abre la app de escritorio de Granola. Pulsa el engranaje (Settings) abajo a la izquierda y luego "API"' },
+      { label: 'Pulsa "Generate API Key" (o copia tu clave actual). Pégala abajo' },
     ],
     inputFields: [
       { name: 'token', placeholder: 'grn_...', type: 'password' },
@@ -272,17 +272,17 @@ export const SOURCE_CATALOG: ConnectorMeta[] = [
     category: 'communication',
     icon: 'MessageSquare',
     color: 'text-green-400',
-    description: 'macOS Messages history',
+    description: 'Historial de Mensajes de macOS',
     unitLabel: 'messages',
     steps: [
       {
         label: 'Open the Apple menu () → System Settings → Privacy & Security (in the left sidebar) → scroll down and click "Full Disk Access"',
       },
       {
-        label: 'Click the "+" button at the bottom of the list. Navigate to Applications → Utilities → select "Terminal.app" (or iTerm2/Warp if you use those). If you\'re using the desktop app, also add "AXE.app" from Applications',
+        label: 'Pulsa el botón "+" debajo de la lista. Ve a Aplicaciones → Utilidades → elige "Terminal.app" (o iTerm2/Warp si los usas). Si usas la app de escritorio, añade también "AXE.app" desde Aplicaciones',
       },
       {
-        label: 'Toggle the switch ON next to each app you added. Close and reopen your terminal (or restart AXE). iMessage data will be detected automatically — no credentials needed',
+        label: 'Activa el interruptor junto a cada app que añadiste. Cierra y vuelve a abrir la terminal (o reinicia AXE). iMessage se detectará solo, sin credenciales',
       },
     ],
   },
@@ -294,17 +294,17 @@ export const SOURCE_CATALOG: ConnectorMeta[] = [
     category: 'documents',
     icon: 'FolderOpen',
     color: 'text-purple-300',
-    description: 'Markdown vault',
+    description: 'Bóveda de Markdown',
     unitLabel: 'notes',
     steps: [
       {
-        label: 'Find your vault path: open Obsidian → click the vault name in the bottom-left corner → "Manage Vaults" → look at the path shown under your vault name. On macOS this is usually ~/Documents/MyVault or ~/Library/Mobile Documents/iCloud~md~obsidian/Documents/MyVault',
+        label: 'Busca la ruta de tu bóveda: abre Obsidian → pulsa el nombre de la bóveda abajo a la izquierda → "Manage Vaults" → mira la ruta debajo del nombre. En Windows suele ser algo como C:\\Users\\tu\\Documents\\MiBoveda',
       },
       {
-        label: 'Alternatively, open Finder → navigate to your vault folder (it contains a hidden .obsidian directory). Right-click the folder → "Copy as Pathname" to get the full path',
+        label: 'También puedes abrir el Explorador de archivos → ir a la carpeta de la bóveda (tiene una carpeta oculta .obsidian) → clic derecho → "Copiar como ruta de acceso"',
       },
       {
-        label: 'Paste the full path below. AXE will index all .md files in the vault',
+        label: 'Pega la ruta completa abajo. AXE indexará todos los archivos .md de la bóveda',
       },
     ],
     inputFields: [
@@ -318,30 +318,30 @@ export const SOURCE_CATALOG: ConnectorMeta[] = [
     category: 'documents',
     icon: 'FolderOpen',
     color: 'text-blue-400',
-    description: 'Docs, Sheets, and files',
+    description: 'Documentos, hojas de cálculo y archivos',
     unitLabel: 'files',
     steps: [
       {
-        label: 'Go to Google Cloud Console → create a new project (or select an existing one). Give it any name (e.g. "AXE")',
+        label: 'Ve a Google Cloud Console → crea un proyecto nuevo (o elige uno). Ponle cualquier nombre (p. ej. "AXE")',
         url: 'https://console.cloud.google.com/projectcreate',
-        urlLabel: 'Create Project',
+        urlLabel: 'Crear proyecto',
       },
       {
-        label: 'Enable the Google Drive API: click the link below, make sure your project is selected at the top, then click "Enable"',
+        label: 'Activa la API de Google Drive: pulsa el enlace de abajo, comprueba que tu proyecto está elegido arriba y pulsa "Enable"',
         url: 'https://console.cloud.google.com/apis/library/drive.googleapis.com',
-        urlLabel: 'Enable Drive API',
+        urlLabel: 'Activar API de Drive',
       },
       {
-        label: 'Create OAuth credentials: go to Credentials (link below) → click "+ Create Credentials" → choose "OAuth client ID" → Application type: "Web application". Under "Authorized redirect URIs" add this server\'s callback (e.g. http://localhost:1313/v1/connectors/gdrive/oauth/callback — match the host/port your AXE server is bound to) → click "Create".',
+        label: 'Crea las credenciales OAuth: ve a Credentials (enlace abajo) → "+ Create Credentials" → "OAuth client ID" → tipo: "Web application". En "Authorized redirect URIs" añade la dirección de retorno de este servidor (p. ej. http://localhost:1313/v1/connectors/gdrive/oauth/callback, con el puerto de tu servidor AXE) → "Create".',
         url: 'https://console.cloud.google.com/apis/credentials',
-        urlLabel: 'Open Credentials',
+        urlLabel: 'Abrir credenciales',
       },
       {
-        label: 'A dialog will show your Client ID and Client Secret. Copy both and paste them below, then click Connect — a Google sign-in window opens to finish authorization. (If you miss the dialog, click the download icon next to your OAuth client to see them again.)',
+        label: 'Verás tu Client ID y tu Client Secret. Cópialos, pégalos abajo y pulsa Conectar: se abrirá una ventana de Google para terminar. (Si cierras el aviso, pulsa el icono de descarga junto a tu cliente OAuth para verlos otra vez.)',
       },
     ],
     inputFields: [
-      { name: 'email', placeholder: 'Client ID (e.g. 123456-abc.apps.googleusercontent.com)', type: 'text' },
+      { name: 'email', placeholder: 'Client ID (p. ej. 123456-abc.apps.googleusercontent.com)', type: 'text' },
       { name: 'password', placeholder: 'Client Secret', type: 'password' },
     ],
   },
@@ -353,26 +353,26 @@ export const SOURCE_CATALOG: ConnectorMeta[] = [
     category: 'pim',
     icon: 'Calendar',
     color: 'text-blue-400',
-    description: 'Events and meetings',
+    description: 'Eventos y reuniones',
     unitLabel: 'events',
     steps: [
       {
-        label: 'Go to Google Cloud Console → use the same project as Google Drive (or create a new one)',
+        label: 'Ve a Google Cloud Console → usa el mismo proyecto que para Google Drive (o crea uno nuevo)',
         url: 'https://console.cloud.google.com/projectcreate',
-        urlLabel: 'Open Console',
+        urlLabel: 'Abrir consola',
       },
       {
-        label: 'Enable the Google Calendar API: click the link below, select your project, then click "Enable"',
+        label: 'Activa la API de Google Calendar: pulsa el enlace de abajo, elige tu proyecto y pulsa "Enable"',
         url: 'https://console.cloud.google.com/apis/library/calendar-json.googleapis.com',
-        urlLabel: 'Enable Calendar API',
+        urlLabel: 'Activar API de Calendar',
       },
       {
-        label: 'Go to Credentials → "+ Create Credentials" → "OAuth client ID" → Application type: "Desktop app" → "Create". Copy the Client ID and Client Secret',
+        label: 'Ve a Credentials → "+ Create Credentials" → "OAuth client ID" → tipo: "Desktop app" → "Create". Copia el Client ID y el Client Secret',
         url: 'https://console.cloud.google.com/apis/credentials',
-        urlLabel: 'Open Credentials',
+        urlLabel: 'Abrir credenciales',
       },
       {
-        label: 'Paste the Client ID and Client Secret below (you can reuse the same OAuth client as Google Drive if you enabled both APIs in the same project)',
+        label: 'Pega el Client ID y el Client Secret abajo (puedes usar el mismo cliente OAuth que para Google Drive si activaste ambas APIs en el mismo proyecto)',
       },
     ],
     inputFields: [
@@ -387,26 +387,26 @@ export const SOURCE_CATALOG: ConnectorMeta[] = [
     category: 'pim',
     icon: 'Users',
     color: 'text-blue-400',
-    description: 'People and contact info',
+    description: 'Personas y contactos',
     unitLabel: 'contacts',
     steps: [
       {
-        label: 'Go to Google Cloud Console → use the same project as Google Drive (or create a new one)',
+        label: 'Ve a Google Cloud Console → usa el mismo proyecto que para Google Drive (o crea uno nuevo)',
         url: 'https://console.cloud.google.com/projectcreate',
-        urlLabel: 'Open Console',
+        urlLabel: 'Abrir consola',
       },
       {
-        label: 'Enable the People API: click the link below, select your project, then click "Enable"',
+        label: 'Activa la People API: pulsa el enlace de abajo, elige tu proyecto y pulsa "Enable"',
         url: 'https://console.cloud.google.com/apis/library/people.googleapis.com',
-        urlLabel: 'Enable People API',
+        urlLabel: 'Activar People API',
       },
       {
-        label: 'Go to Credentials → "+ Create Credentials" → "OAuth client ID" → Application type: "Desktop app" → "Create". Copy the Client ID and Client Secret',
+        label: 'Ve a Credentials → "+ Create Credentials" → "OAuth client ID" → tipo: "Desktop app" → "Create". Copia el Client ID y el Client Secret',
         url: 'https://console.cloud.google.com/apis/credentials',
-        urlLabel: 'Open Credentials',
+        urlLabel: 'Abrir credenciales',
       },
       {
-        label: 'Paste the Client ID and Client Secret below',
+        label: 'Pega el Client ID y el Client Secret abajo',
       },
     ],
     inputFields: [
@@ -421,17 +421,17 @@ export const SOURCE_CATALOG: ConnectorMeta[] = [
     category: 'documents',
     icon: 'FileText',
     color: 'text-yellow-400',
-    description: 'macOS Notes app',
+    description: 'App Notas de macOS',
     unitLabel: 'notes',
     steps: [
       {
         label: 'Open the Apple menu () → System Settings → Privacy & Security (in the left sidebar) → scroll down and click "Full Disk Access"',
       },
       {
-        label: 'Click the "+" button at the bottom of the list. Navigate to Applications → Utilities → select "Terminal.app" (or iTerm2/Warp if you use those). If you\'re using the desktop app, also add "AXE.app" from Applications',
+        label: 'Pulsa el botón "+" debajo de la lista. Ve a Aplicaciones → Utilidades → elige "Terminal.app" (o iTerm2/Warp si los usas). Si usas la app de escritorio, añade también "AXE.app" desde Aplicaciones',
       },
       {
-        label: 'Toggle the switch ON next to each app you added. Close and reopen your terminal (or restart AXE). Apple Notes will be detected automatically — no credentials needed',
+        label: 'Activa el interruptor junto a cada app que añadiste. Cierra y vuelve a abrir la terminal (o reinicia AXE). Apple Notes se detectará solo, sin credenciales',
       },
     ],
   },
@@ -442,17 +442,17 @@ export const SOURCE_CATALOG: ConnectorMeta[] = [
     category: 'pim',
     icon: 'Users',
     color: 'text-orange-400',
-    description: 'macOS Contacts app',
+    description: 'App Contactos de macOS',
     unitLabel: 'contacts',
     steps: [
       {
         label: 'Open the Apple menu () → System Settings → Privacy & Security (in the left sidebar) → scroll down and click "Full Disk Access"',
       },
       {
-        label: 'Click the "+" button at the bottom of the list. Navigate to Applications → Utilities → select "Terminal.app" (or iTerm2/Warp if you use those). If you\'re using the desktop app, also add "AXE.app" from Applications',
+        label: 'Pulsa el botón "+" debajo de la lista. Ve a Aplicaciones → Utilidades → elige "Terminal.app" (o iTerm2/Warp si los usas). Si usas la app de escritorio, añade también "AXE.app" desde Aplicaciones',
       },
       {
-        label: 'Toggle the switch ON next to each app you added. Close and reopen your terminal (or restart AXE). Apple Contacts will be detected automatically — no credentials needed',
+        label: 'Activa el interruptor junto a cada app que añadiste. Cierra y vuelve a abrir la terminal (o reinicia AXE). Apple Contacts se detectará solo, sin credenciales',
       },
     ],
   },
@@ -463,22 +463,22 @@ export const SOURCE_CATALOG: ConnectorMeta[] = [
     category: 'communication',
     icon: 'Mail',
     color: 'text-blue-400',
-    description: 'Microsoft email and calendar',
+    description: 'Correo y calendario de Microsoft',
     unitLabel: 'emails',
     steps: [
       {
-        label: 'Go to the Azure Portal → App Registrations → click "+ New registration". Name it "AXE", select "Accounts in this organizational directory only", and click Register',
+        label: 'Ve al Azure Portal → App Registrations → "+ New registration". Llámala "AXE", elige "Accounts in this organizational directory only" y pulsa Register',
         url: 'https://portal.azure.com/#view/Microsoft_AAD_RegisteredApps/ApplicationsListBlade',
-        urlLabel: 'Open Azure App Registrations',
+        urlLabel: 'Abrir registros de apps de Azure',
       },
       {
-        label: 'In the left sidebar, click "API Permissions" → "Add a permission" → "Microsoft Graph" → "Delegated permissions" → search and check "Mail.Read" → click "Add permissions"',
+        label: 'En el menú de la izquierda, pulsa "API Permissions" → "Add a permission" → "Microsoft Graph" → "Delegated permissions" → busca y marca "Mail.Read" → "Add permissions"',
       },
       {
-        label: 'In the left sidebar, click "Certificates & secrets" → "New client secret" → set a description and expiry → click "Add" → immediately copy the "Value" (you won\'t see it again)',
+        label: 'En el menú de la izquierda, pulsa "Certificates & secrets" → "New client secret" → pon una descripción y caducidad → "Add" → copia enseguida el "Value" (no lo volverás a ver)',
       },
       {
-        label: 'Go to "Overview" in the left sidebar and copy the "Application (client) ID". Paste both the Client ID and the Client Secret below',
+        label: 'Ve a "Overview" en el menú de la izquierda y copia el "Application (client) ID". Pega el Client ID y el Client Secret abajo',
       },
     ],
     inputFields: [
@@ -493,23 +493,23 @@ export const SOURCE_CATALOG: ConnectorMeta[] = [
     category: 'documents',
     icon: 'FolderOpen',
     color: 'text-blue-300',
-    description: 'Cloud file storage',
+    description: 'Archivos en la nube',
     unitLabel: 'files',
     steps: [
       {
-        label: 'Go to the Dropbox App Console and click "Create app". Choose "Scoped access" → "Full Dropbox" → give it a name (e.g. "AXE") → click "Create app"',
+        label: 'Ve a la Dropbox App Console y pulsa "Create app". Elige "Scoped access" → "Full Dropbox" → ponle un nombre (p. ej. "AXE") → "Create app"',
         url: 'https://www.dropbox.com/developers/apps/create',
-        urlLabel: 'Open Dropbox App Console',
+        urlLabel: 'Abrir consola de apps de Dropbox',
       },
       {
-        label: 'Click the "Permissions" tab at the top. Check "files.metadata.read" and "files.content.read" → click "Submit" at the bottom to save',
+        label: 'Pulsa la pestaña "Permissions" arriba. Marca "files.metadata.read" y "files.content.read" → pulsa "Submit" abajo para guardar',
       },
       {
-        label: 'Go back to the "Settings" tab. Under "OAuth 2", find "Generated access token" and click "Generate". Copy the token and paste it below',
+        label: 'Vuelve a la pestaña "Settings". En "OAuth 2", busca "Generated access token" y pulsa "Generate". Copia el token y pégalo abajo',
       },
     ],
     inputFields: [
-      { name: 'token', placeholder: 'Access token (sl.u...)', type: 'password' },
+      { name: 'token', placeholder: 'Token de acceso (sl.u...)', type: 'password' },
     ],
   },
   {
@@ -519,19 +519,19 @@ export const SOURCE_CATALOG: ConnectorMeta[] = [
     category: 'communication',
     icon: 'MessageSquare',
     color: 'text-green-400',
-    description: 'WhatsApp messages (Meta Cloud API)',
+    description: 'Mensajes de WhatsApp (API de Meta)',
     unitLabel: 'messages',
     steps: [
       {
-        label: 'Go to Meta for Developers → click "Create App" → choose "Business" type → fill in your app details and click "Create App"',
+        label: 'Ve a Meta for Developers → "Create App" → elige el tipo "Business" → rellena los datos y pulsa "Create App"',
         url: 'https://developers.facebook.com/apps/',
-        urlLabel: 'Open Meta Developer Portal',
+        urlLabel: 'Abrir portal de desarrolladores de Meta',
       },
       {
-        label: 'On the app dashboard, find "WhatsApp" and click "Set up". Follow the prompts to add a WhatsApp test number. Go to "API Setup" and copy the temporary access token',
+        label: 'En el panel de la app, busca "WhatsApp" y pulsa "Set up". Sigue los pasos para añadir un número de prueba. Ve a "API Setup" y copia el token de acceso temporal',
       },
       {
-        label: 'Copy your "Phone Number ID" (shown on the API Setup page) and the access token. Paste them below separated by a colon — e.g. 123456789:EAABx...',
+        label: 'Copia tu "Phone Number ID" (en la página API Setup) y el token. Pégalos abajo separados por dos puntos, p. ej. 123456789:EAABx...',
       },
     ],
     inputFields: [

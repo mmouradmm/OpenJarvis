@@ -34,7 +34,7 @@ export function SpeakMessageButton({ messageId, content }: Props) {
           (isMine && state === 'loading'
             ? 'Generando voz...'
             : isMine && state === 'speaking'
-              ? 'Stop'
+              ? 'Detener'
               : 'Leer en voz alta')
         }
         aria-label={busy ? 'Dejar de leer el mensaje' : 'Leer mensaje en voz alta'}

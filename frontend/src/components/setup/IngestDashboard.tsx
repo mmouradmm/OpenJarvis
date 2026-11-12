@@ -53,7 +53,7 @@ function ProgressRow({
               : isDone
                 ? `${status!.items_synced} items`
                 : status?.state === 'paused'
-                  ? 'Paused'
+                  ? 'En pausa'
                   : status?.state === 'error'
                     ? 'Error'
                     : 'Iniciando...'}
