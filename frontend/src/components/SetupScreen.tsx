@@ -167,14 +167,13 @@ export function SetupScreen({ onReady }: { onReady: () => void }) {
       <div className="w-full max-w-md px-6">
         {/* Logo */}
         <div className="text-center mb-10">
-          <div
-            className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4"
-            style={{ background: 'var(--color-accent-subtle)', color: 'var(--color-accent)' }}
-          >
-            <Cpu size={32} />
-          </div>
+          <img
+            src="/pwa-192x192.png"
+            alt="AXE"
+            className="w-20 h-20 mx-auto mb-4"
+          />
           <h1 className="text-2xl font-bold mb-1" style={{ color: 'var(--color-text)' }}>
-            OpenJarvis
+            AXE
           </h1>
           <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>
             {!statusChecked

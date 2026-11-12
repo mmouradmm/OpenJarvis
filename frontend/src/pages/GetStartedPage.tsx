@@ -19,7 +19,7 @@ import {
 import { isTauri, checkHealth } from '../lib/api';
 
 const GITHUB_BASE =
-  'https://github.com/open-jarvis/OpenJarvis/releases/latest/download';
+  'https://github.com/mmouradmm/OpenJarvis/releases/latest/download';
 
 interface Platform {
   id: string;
@@ -34,35 +34,35 @@ const PLATFORMS: Platform[] = [
     id: 'mac-arm',
     label: 'macOS (Apple Silicon)',
     shortLabel: 'macOS (Apple Silicon)',
-    file: 'OpenJarvis_universal.dmg',
+    file: 'AXE_universal.dmg',
     icon: Apple,
   },
   {
     id: 'mac-intel',
     label: 'macOS (Intel)',
     shortLabel: 'macOS (Intel)',
-    file: 'OpenJarvis_universal.dmg',
+    file: 'AXE_universal.dmg',
     icon: Apple,
   },
   {
     id: 'windows',
     label: 'Windows (64-bit)',
     shortLabel: 'Windows (64-bit)',
-    file: 'OpenJarvis_x64-setup.exe',
+    file: 'AXE_x64-setup.exe',
     icon: Monitor,
   },
   {
     id: 'linux-deb',
     label: 'Linux (DEB)',
     shortLabel: 'Linux (DEB)',
-    file: 'OpenJarvis_amd64.deb',
+    file: 'AXE_amd64.deb',
     icon: Terminal,
   },
   {
     id: 'linux-rpm',
     label: 'Linux (RPM)',
     shortLabel: 'Linux (RPM)',
-    file: 'OpenJarvis_x86_64.rpm',
+    file: 'AXE_x86_64.rpm',
     icon: Terminal,
   },
 ];
@@ -199,7 +199,7 @@ function HostedView() {
         <Sparkles size={32} />
       </div>
       <h1 className="text-3xl font-bold mb-2" style={{ color: 'var(--color-text)' }}>
-        OpenJarvis
+        AXE
       </h1>
       <p
         className="text-sm mb-6 leading-relaxed max-w-md mx-auto"
@@ -263,7 +263,7 @@ function DesktopView() {
           <Sparkles size={32} />
         </div>
         <h1 className="text-3xl font-bold mb-2" style={{ color: 'var(--color-text)' }}>
-          OpenJarvis Desktop
+          AXE Desktop
         </h1>
         <p
           className="text-sm mb-4 leading-relaxed max-w-md mx-auto"
@@ -336,7 +336,7 @@ function SelfHostedView() {
           <Sparkles size={32} />
         </div>
         <h1 className="text-3xl font-bold mb-2" style={{ color: 'var(--color-text)' }}>
-          OpenJarvis
+          AXE
         </h1>
         <p
           className="text-sm mb-4 leading-relaxed max-w-md mx-auto"
