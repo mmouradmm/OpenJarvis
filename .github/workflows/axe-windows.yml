@@ -1,0 +1,106 @@
+# Builds the AXE Windows installer (.exe) and publishes it as a GitHub
+# release, so it can be downloaded and installed with a double click.
+#
+# Run it from the "Actions" tab → "AXE: instalador de Windows" → "Run workflow",
+# or push a tag like axe-v1.0.2.
+name: "AXE: instalador de Windows"
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'axe-v*'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: axe-windows-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Rust cache
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: 'frontend/src-tauri -> target'
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+
+      - name: Use the reviewed npm toolchain
+        run: npm install --global npm@11.19.0
+
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Download Ollama sidecar
+        shell: bash
+        run: |
+          cd frontend/src-tauri/scripts
+          chmod +x download-ollama.sh
+          ./download-ollama.sh x86_64-pc-windows-msvc
+
+      - name: Write Tauri release config
+        shell: bash
+        run: |
+          node <<'NODE'
+          const { writeFileSync } = require('node:fs');
+          // Bundle Ollama with the installer. No updater artifacts: AXE has
+          // no signing key, and the upstream OpenJarvis updater is disabled.
+          writeFileSync('frontend/src-tauri/tauri.release.conf.json', JSON.stringify({
+            bundle: { createUpdaterArtifacts: false, externalBin: ['binaries/ollama'] },
+          }));
+          NODE
+
+      - name: Build installer
+        working-directory: frontend
+        run: npx tauri build --bundles nsis --config src-tauri/tauri.release.conf.json
+
+      - name: Collect installer
+        id: collect
+        shell: bash
+        run: |
+          set -euo pipefail
+          exe=$(ls frontend/src-tauri/target/release/bundle/nsis/*-setup.exe | head -1)
+          test -s "$exe"
+          mkdir -p dist-axe
+          cp "$exe" dist-axe/AXE_x64-setup.exe
+          ls -l dist-axe
+
+      - name: Keep a copy in the run
+        uses: actions/upload-artifact@v4
+        with:
+          name: AXE_x64-setup
+          path: dist-axe/AXE_x64-setup.exe
+
+      - name: Publish release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [[ "${GITHUB_REF}" == refs/tags/axe-v* ]]; then
+            TAG="${GITHUB_REF_NAME}"
+          else
+            TAG="axe-latest"
+          fi
+          NOTES="Instalador de AXE para Windows (64 bits). Descarga AXE_x64-setup.exe y ábrelo con doble clic. Compilado desde ${GITHUB_SHA}."
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" dist-axe/AXE_x64-setup.exe --clobber
+            gh release edit "$TAG" --notes "$NOTES" --latest
+          else
+            gh release create "$TAG" dist-axe/AXE_x64-setup.exe \
+              --title "AXE para Windows" --notes "$NOTES" --target "${GITHUB_SHA}" --latest
+          fi
