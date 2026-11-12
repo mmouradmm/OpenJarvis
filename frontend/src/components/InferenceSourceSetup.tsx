@@ -63,10 +63,10 @@ function SetupFrame({ children }: { children: React.ReactNode }) {
             <Cpu size={32} />
           </div>
           <h1 className="text-2xl font-bold mb-1" style={{ color: 'var(--color-text)' }}>
-            Choose your inference source
+            Elige dónde funciona tu IA
           </h1>
           <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>
-            Nothing is installed, started, or downloaded until you confirm a choice.
+            No se instala, inicia ni descarga nada hasta que confirmes una opción.
           </p>
         </div>
         <div
@@ -97,10 +97,10 @@ export function InferenceSourceChooser({
           <Cpu size={22} className="shrink-0 mt-0.5" style={{ color: 'var(--color-accent)' }} />
           <span>
             <span className="block text-sm font-semibold" style={{ color: 'var(--color-text)' }}>
-              Local Ollama
+              Ollama local
             </span>
             <span className="block text-xs mt-1" style={{ color: 'var(--color-text-secondary)' }}>
-              Run models on this computer. Requires a separate confirmation before Ollama starts or a model downloads.
+              Usa modelos en este equipo. Te pediremos confirmación antes de iniciar Ollama o descargar un modelo.
             </span>
           </span>
         </button>
@@ -113,10 +113,10 @@ export function InferenceSourceChooser({
           <Server size={22} className="shrink-0 mt-0.5" style={{ color: 'var(--color-accent)' }} />
           <span>
             <span className="block text-sm font-semibold" style={{ color: 'var(--color-text)' }}>
-              OpenAI-compatible server
+              Servidor compatible con OpenAI
             </span>
             <span className="block text-xs mt-1" style={{ color: 'var(--color-text-secondary)' }}>
-              Connect to LM Studio, vLLM, SGLang, llama.cpp, MLX, or another compatible endpoint. Ollama stays off.
+              Conéctate a LM Studio, vLLM, SGLang, llama.cpp, MLX u otro servidor compatible. Ollama queda apagado.
             </span>
           </span>
         </button>
@@ -125,7 +125,7 @@ export function InferenceSourceChooser({
   );
 }
 
-function BackButton({ onClick, label = 'Back', disabled = false }: { onClick: () => void; label?: string; disabled?: boolean }) {
+function BackButton({ onClick, label = 'Atrás', disabled = false }: { onClick: () => void; label?: string; disabled?: boolean }) {
   return (
     <button
       type="button"
@@ -159,7 +159,7 @@ export function InferenceRecoveryButton({
         background: 'var(--color-surface)',
       }}
     >
-      {recovering ? 'Stopping setup...' : 'Change inference source'}
+      {recovering ? 'Deteniendo la configuración...' : 'Cambiar origen de la IA'}
     </button>
   );
 }
@@ -182,10 +182,10 @@ export function OllamaConsent({
         <Download size={22} className="shrink-0 mt-0.5" style={{ color: 'var(--color-accent)' }} />
         <div>
           <h2 className="text-base font-semibold mb-1" style={{ color: 'var(--color-text)' }}>
-            Allow local model setup?
+            ¿Permitir instalar un modelo local?
           </h2>
           <p className="text-sm leading-relaxed" style={{ color: 'var(--color-text-secondary)' }}>
-            AXE will start Ollama and may download one model selected for this computer. Model downloads can use several gigabytes of disk space and network data.
+            AXE iniciará Ollama y puede descargar un modelo elegido para este equipo. Los modelos pueden ocupar varios gigabytes de disco y de datos de internet.
           </p>
         </div>
       </div>
@@ -194,7 +194,7 @@ export function OllamaConsent({
         style={{ background: 'var(--color-accent-subtle)', color: 'var(--color-text-secondary)' }}
       >
         <ShieldCheck size={16} className="shrink-0" style={{ color: 'var(--color-accent)' }} />
-        Going back leaves Ollama stopped and does not save this choice.
+        Si vuelves atrás, Ollama sigue apagado y no se guarda esta opción.
       </div>
       {error && <SetupError message={error} />}
       <button
@@ -205,7 +205,7 @@ export function OllamaConsent({
         style={{ background: 'var(--color-accent)', color: 'white' }}
       >
         {busy && <Loader2 size={16} className="animate-spin" />}
-        {busy ? 'Starting local setup...' : 'Use Ollama and continue'}
+        {busy ? 'Iniciando la configuración local...' : 'Usar Ollama y continuar'}
       </button>
     </SetupFrame>
   );
@@ -262,20 +262,20 @@ export function CustomEndpointSetup({
 
   return (
     <SetupFrame>
-      <BackButton onClick={onCancel} label="Cancel" disabled={busy} />
+      <BackButton onClick={onCancel} label="Cancelar" disabled={busy} />
       <form onSubmit={submit} className="flex flex-col gap-4">
         <div>
           <h2 className="text-base font-semibold mb-1" style={{ color: 'var(--color-text)' }}>
-            Connect your server
+            Conecta tu servidor
           </h2>
           <p className="text-xs" style={{ color: 'var(--color-text-secondary)' }}>
-            AXE will connect only after you submit this form. Ollama will not start or download models.
+            AXE solo se conectará cuando envíes este formulario. Ollama no se iniciará ni descargará modelos.
           </p>
         </div>
         <label className="text-xs font-medium" style={{ color: 'var(--color-text-secondary)' }}>
-          Server URL
+          URL del servidor
           <input
-            aria-label="Server URL"
+            aria-label="URL del servidor"
             type="url"
             required
             value={host}
@@ -285,9 +285,9 @@ export function CustomEndpointSetup({
           />
         </label>
         <label className="text-xs font-medium" style={{ color: 'var(--color-text-secondary)' }}>
-          Model ID
+          ID del modelo
           <input
-            aria-label="Model ID"
+            aria-label="ID del modelo"
             type="text"
             required
             value={model}
@@ -298,9 +298,9 @@ export function CustomEndpointSetup({
           />
         </label>
         <label className="text-xs font-medium" style={{ color: 'var(--color-text-secondary)' }}>
-          Server type
+          Tipo de servidor
           <select
-            aria-label="Server type"
+            aria-label="Tipo de servidor"
             value={engine}
             onChange={(event) => setEngine(event.target.value)}
             className="block w-full mt-1.5 px-3 py-2 rounded-lg text-sm outline-none"
@@ -314,9 +314,9 @@ export function CustomEndpointSetup({
           </select>
         </label>
         <label className="text-xs font-medium" style={{ color: 'var(--color-text-secondary)' }}>
-          API key (optional)
+          Clave API (opcional)
           <input
-            aria-label="API key"
+            aria-label="Clave API"
             type="password"
             value={apiKey}
             onChange={(event) => setApiKey(event.target.value)}
@@ -333,7 +333,7 @@ export function CustomEndpointSetup({
           style={{ background: 'var(--color-accent)', color: 'white' }}
         >
           {busy && <Loader2 size={16} className="animate-spin" />}
-          {busy ? 'Connecting...' : 'Save and connect'}
+          {busy ? 'Conectando...' : 'Guardar y conectar'}
         </button>
       </form>
     </SetupFrame>

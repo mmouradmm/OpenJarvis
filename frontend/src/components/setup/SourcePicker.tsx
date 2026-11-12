@@ -110,9 +110,9 @@ function CategorySection({
 // ---------------------------------------------------------------------------
 
 const CATEGORIES: { key: 'communication' | 'documents' | 'pim'; label: string }[] = [
-  { key: 'communication', label: 'Communication' },
-  { key: 'documents', label: 'Documents' },
-  { key: 'pim', label: 'Personal Info' },
+  { key: 'communication', label: 'Comunicación' },
+  { key: 'documents', label: 'Documentos' },
+  { key: 'pim', label: 'Información personal' },
 ];
 
 export function SourcePicker({ onContinue }: { onContinue: (selectedIds: string[]) => void }) {
@@ -135,10 +135,10 @@ export function SourcePicker({ onContinue }: { onContinue: (selectedIds: string[
       {/* Header */}
       <div className="mb-6">
         <h2 className="text-xl font-bold mb-1" style={{ color: 'var(--color-text)' }}>
-          Connect your sources
+          Conecta tus fuentes
         </h2>
         <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>
-          Choose which data sources to include in your personal knowledge base.
+          Elige qué fuentes de datos incluir en tu base de conocimiento personal.
         </p>
       </div>
 
@@ -169,7 +169,7 @@ export function SourcePicker({ onContinue }: { onContinue: (selectedIds: string[
           }}
         >
           {selected.size === 0
-            ? 'Select sources to continue'
+            ? 'Elige fuentes para continuar'
             : `Connect ${selected.size} source${selected.size !== 1 ? 's' : ''}`}
         </button>
       </div>

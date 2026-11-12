@@ -20,7 +20,7 @@ export function XRayFooter({ usage, telemetry, isResearch = false }: Props) {
   // produced the answer) and label the response with the mode instead.
   const parts: string[] = [];
   if (isResearch) {
-    parts.push('Deep Research');
+    parts.push('Investigación profunda');
   } else {
     if (telemetry?.engine) parts.push(telemetry.engine);
     if (telemetry?.model_id) parts.push(telemetry.model_id);
@@ -40,10 +40,10 @@ export function XRayFooter({ usage, telemetry, isResearch = false }: Props) {
   // Build expanded rows
   const rows: Array<{ label: string; value: string; color?: string }> = [];
   if (isResearch) {
-    rows.push({ label: 'Mode', value: 'Deep Research' });
+    rows.push({ label: 'Modo', value: 'Investigación profunda' });
   } else if (telemetry?.engine) {
     const modelDetail = telemetry.model_id || '';
-    rows.push({ label: 'Engine', value: `${telemetry.engine}${modelDetail ? ` (${modelDetail})` : ''}` });
+    rows.push({ label: 'Motor', value: `${telemetry.engine}${modelDetail ? ` (${modelDetail})` : ''}` });
   }
   if (usage) {
     const tokenParts = [`${usage.completion_tokens} generated`, `${usage.prompt_tokens} prompt`];
@@ -62,21 +62,21 @@ export function XRayFooter({ usage, telemetry, isResearch = false }: Props) {
   }
   if (telemetry?.complexity_tier) {
     rows.push({
-      label: 'Complexity',
+      label: 'Complejidad',
       value: `${telemetry.complexity_tier} (${telemetry.complexity_score?.toFixed(2)})`,
     });
   }
   if (telemetry?.suggested_max_tokens) {
-    rows.push({ label: 'Token budget', value: `${telemetry.suggested_max_tokens}` });
+    rows.push({ label: 'Límite de tokens', value: `${telemetry.suggested_max_tokens}` });
   }
   if (telemetry?.tokens_per_sec) {
-    rows.push({ label: 'Speed', value: `${Math.round(telemetry.tokens_per_sec)} tok/s` });
+    rows.push({ label: 'Velocidad', value: `${Math.round(telemetry.tokens_per_sec)} tok/s` });
   }
   if (telemetry?.ttft_ms != null || telemetry?.total_ms != null) {
     const latencyParts: string[] = [];
     if (telemetry.ttft_ms != null) latencyParts.push(`TTFT ${formatMs(telemetry.ttft_ms)}`);
     if (telemetry.total_ms != null) latencyParts.push(`Total ${formatMs(telemetry.total_ms)}`);
-    rows.push({ label: 'Latency', value: latencyParts.join(' \u00B7 ') });
+    rows.push({ label: 'Latencia', value: latencyParts.join(' \u00B7 ') });
   }
 
   return (

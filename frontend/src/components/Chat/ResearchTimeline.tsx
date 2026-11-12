@@ -87,7 +87,7 @@ function TimelineStep({
           color: active ? 'var(--color-accent)' : 'var(--color-text-tertiary)',
         }}
       >
-        Search {index}
+        Buscar {index}
       </div>
 
       <div
@@ -171,7 +171,7 @@ export function ResearchTimeline({ traces, isLive, hasContent }: Props) {
               boxShadow: '0 0 0 3px var(--color-accent-subtle)',
             }}
           />
-          <StatusLine text="Analyzing query" />
+          <StatusLine text="Analizando la consulta" />
         </div>
       </div>
     );
@@ -192,7 +192,7 @@ export function ResearchTimeline({ traces, isLive, hasContent }: Props) {
           border: 'none',
           padding: 0,
         }}
-        title={expanded ? 'Collapse search trace' : 'Expand search trace'}
+        title={expanded ? 'Ocultar pasos de búsqueda' : 'Mostrar pasos de búsqueda'}
       >
         <span>{summary}</span>
         <Chevron size={12} />
@@ -225,7 +225,7 @@ export function ResearchTimeline({ traces, isLive, hasContent }: Props) {
                     boxShadow: '0 0 0 3px var(--color-accent-subtle)',
                   }}
                 />
-                <StatusLine text="Synthesizing findings" />
+                <StatusLine text="Resumiendo resultados" />
               </div>
             )}
           </div>
